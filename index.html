@@ -1,0 +1,888 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ChambaPe Wasi – El técnico llega a tu casa</title>
+  <meta name="description" content="ChambaPe Wasi conecta clientes con técnicos del hogar en Perú. Electricidad, gasfitería, pintura, carpintería y limpieza a domicilio."/>
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Lato:wght@300;400;700&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --red: #E8192C;
+      --red-dark: #B5111F;
+      --gold: #F5A623;
+      --white: #FFFFFF;
+      --off-white: #FDF8F8;
+      --gray: #6B7280;
+      --gray-light: #F3F4F6;
+      --dark: #1A1A2E;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Lato', sans-serif;
+      background: var(--off-white);
+      color: var(--dark);
+      overflow-x: hidden;
+    }
+
+    /* NAV */
+    nav {
+      background: var(--white);
+      padding: 0 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 64px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+      position: sticky; top: 0; z-index: 100;
+    }
+    .logo {
+      display: flex; align-items: center; gap: 10px;
+      font-family: 'Sora', sans-serif;
+      font-weight: 800; font-size: 1.2rem; color: var(--red);
+      text-decoration: none;
+    }
+    .logo-icon {
+      width: 38px; height: 38px; background: var(--white);
+      border-radius: 10px; display: flex; align-items: center;
+      justify-content: center; box-shadow: 0 2px 8px rgba(232,25,44,0.2);
+      font-size: 20px;
+    }
+    nav ul {
+      display: flex; gap: 24px; list-style: none;
+    }
+    nav ul a {
+      text-decoration: none; color: var(--dark);
+      font-family: 'Sora', sans-serif; font-size: 0.85rem; font-weight: 600;
+      transition: color 0.2s;
+    }
+    nav ul a:hover { color: var(--red); }
+    .nav-cta {
+      background: var(--red); color: var(--white) !important;
+      padding: 8px 18px; border-radius: 8px;
+    }
+    .nav-cta:hover { background: var(--red-dark) !important; color: var(--white) !important; }
+
+    /* HERO */
+    .hero {
+      background: linear-gradient(135deg, var(--red) 0%, var(--red-dark) 60%, #7B0010 100%);
+      color: var(--white);
+      padding: 72px 24px 80px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    }
+    .hero-badge {
+      display: inline-block;
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.3);
+      padding: 6px 16px; border-radius: 20px;
+      font-size: 0.8rem; font-family: 'Sora', sans-serif;
+      font-weight: 600; margin-bottom: 20px;
+      backdrop-filter: blur(4px);
+    }
+    .hero h1 {
+      font-family: 'Sora', sans-serif;
+      font-size: clamp(2rem, 6vw, 3.2rem);
+      font-weight: 800; line-height: 1.15;
+      margin-bottom: 16px;
+    }
+    .hero h1 span { color: var(--gold); }
+    .hero p {
+      font-size: 1.1rem; max-width: 560px;
+      margin: 0 auto 32px;
+      opacity: 0.9; line-height: 1.6;
+    }
+    .hero-btns {
+      display: flex; gap: 12px;
+      justify-content: center; flex-wrap: wrap;
+    }
+    .btn-primary {
+      background: var(--gold); color: var(--dark);
+      font-family: 'Sora', sans-serif; font-weight: 700;
+      padding: 14px 28px; border-radius: 10px;
+      text-decoration: none; font-size: 0.95rem;
+      transition: transform 0.2s, box-shadow 0.2s;
+      box-shadow: 0 4px 16px rgba(245,166,35,0.4);
+    }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(245,166,35,0.5); }
+    .btn-secondary {
+      background: rgba(255,255,255,0.12);
+      border: 2px solid rgba(255,255,255,0.5);
+      color: var(--white);
+      font-family: 'Sora', sans-serif; font-weight: 600;
+      padding: 14px 28px; border-radius: 10px;
+      text-decoration: none; font-size: 0.95rem;
+      transition: background 0.2s;
+    }
+    .btn-secondary:hover { background: rgba(255,255,255,0.22); }
+
+    /* TRUST BAR */
+    .trust-bar {
+      background: var(--dark);
+      padding: 20px 24px;
+      display: flex; justify-content: center;
+      gap: 40px; flex-wrap: wrap;
+    }
+    .trust-item {
+      display: flex; align-items: center; gap: 8px;
+      color: rgba(255,255,255,0.85);
+      font-family: 'Sora', sans-serif;
+      font-size: 0.82rem; font-weight: 600;
+    }
+    .trust-item span { font-size: 1.2rem; }
+
+    /* SECTIONS */
+    section { padding: 64px 24px; }
+    .section-label {
+      font-family: 'Sora', sans-serif;
+      font-size: 0.75rem; font-weight: 700;
+      color: var(--red); text-transform: uppercase;
+      letter-spacing: 2px; margin-bottom: 8px;
+    }
+    h2 {
+      font-family: 'Sora', sans-serif;
+      font-size: clamp(1.6rem, 4vw, 2.2rem);
+      font-weight: 800; margin-bottom: 12px; color: var(--dark);
+    }
+    .subtitle {
+      color: var(--gray); font-size: 1rem;
+      line-height: 1.6; max-width: 560px;
+      margin-bottom: 40px;
+    }
+
+    /* SERVICES */
+    .services { background: var(--white); }
+    .services-inner { max-width: 1100px; margin: 0 auto; }
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+    }
+    .service-card {
+      background: var(--off-white);
+      border: 1.5px solid #EEE;
+      border-radius: 16px; padding: 28px 24px;
+      transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+      cursor: default;
+    }
+    .service-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 32px rgba(232,25,44,0.1);
+      border-color: var(--red);
+    }
+    .service-icon {
+      width: 52px; height: 52px;
+      background: linear-gradient(135deg, var(--red), var(--red-dark));
+      border-radius: 14px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 24px; margin-bottom: 16px;
+      box-shadow: 0 4px 12px rgba(232,25,44,0.25);
+    }
+    .service-card h3 {
+      font-family: 'Sora', sans-serif;
+      font-size: 1.05rem; font-weight: 700;
+      margin-bottom: 6px; color: var(--dark);
+    }
+    .service-card p {
+      font-size: 0.88rem; color: var(--gray);
+      line-height: 1.55; margin-bottom: 14px;
+    }
+    .service-price {
+      display: flex; align-items: center; gap: 6px;
+    }
+    .price-tag {
+      background: var(--gold);
+      color: var(--dark); font-family: 'Sora', sans-serif;
+      font-weight: 700; font-size: 0.85rem;
+      padding: 4px 12px; border-radius: 20px;
+    }
+    .price-note {
+      font-size: 0.75rem; color: var(--gray);
+    }
+
+    /* HOW IT WORKS */
+    .how { background: var(--gray-light); }
+    .how-inner { max-width: 900px; margin: 0 auto; }
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 24px; position: relative;
+    }
+    .step {
+      text-align: center; padding: 28px 16px;
+      background: var(--white); border-radius: 16px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+    }
+    .step-num {
+      width: 48px; height: 48px;
+      background: var(--red); color: var(--white);
+      font-family: 'Sora', sans-serif; font-weight: 800;
+      font-size: 1.2rem; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 12px;
+    }
+    .step-icon { font-size: 28px; margin-bottom: 8px; }
+    .step h3 {
+      font-family: 'Sora', sans-serif;
+      font-size: 0.95rem; font-weight: 700; margin-bottom: 6px;
+    }
+    .step p { font-size: 0.82rem; color: var(--gray); line-height: 1.5; }
+
+    /* BOOKING / CTA */
+    .booking {
+      background: linear-gradient(135deg, var(--dark) 0%, #2D1B4E 100%);
+      color: var(--white); text-align: center;
+    }
+    .booking h2 { color: var(--white); }
+    .booking .subtitle { color: rgba(255,255,255,0.7); margin: 0 auto 32px; }
+    .booking-form {
+      max-width: 480px; margin: 0 auto;
+      display: flex; flex-direction: column; gap: 12px;
+    }
+    .booking-form input, .booking-form select {
+      padding: 14px 16px;
+      border: 1.5px solid rgba(255,255,255,0.15);
+      border-radius: 10px;
+      background: rgba(255,255,255,0.08);
+      color: var(--white);
+      font-family: 'Lato', sans-serif; font-size: 0.95rem;
+      outline: none; transition: border-color 0.2s;
+    }
+    .booking-form input::placeholder { color: rgba(255,255,255,0.4); }
+    .booking-form input:focus, .booking-form select:focus {
+      border-color: var(--gold);
+    }
+    .booking-form select option { background: var(--dark); color: var(--white); }
+    .btn-book {
+      background: var(--red); color: var(--white);
+      font-family: 'Sora', sans-serif; font-weight: 700;
+      padding: 15px; border-radius: 10px; border: none;
+      font-size: 1rem; cursor: pointer;
+      transition: background 0.2s, transform 0.2s;
+    }
+    .btn-book:hover { background: var(--red-dark); transform: translateY(-1px); }
+
+    /* LEGAL SECTION */
+    .legal { background: var(--white); }
+    .legal-inner { max-width: 900px; margin: 0 auto; }
+    .legal-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 20px;
+    }
+    .legal-card {
+      border: 1.5px solid #E5E7EB;
+      border-radius: 14px; padding: 24px;
+      transition: border-color 0.2s;
+    }
+    .legal-card:hover { border-color: var(--red); }
+    .legal-card h3 {
+      font-family: 'Sora', sans-serif;
+      font-size: 0.95rem; font-weight: 700;
+      margin-bottom: 8px; display: flex; align-items: center; gap: 8px;
+    }
+    .legal-card p {
+      font-size: 0.84rem; color: var(--gray);
+      line-height: 1.55; margin-bottom: 14px;
+    }
+    .legal-link {
+      color: var(--red); font-family: 'Sora', sans-serif;
+      font-weight: 600; font-size: 0.84rem;
+      text-decoration: none;
+    }
+    .legal-link:hover { text-decoration: underline; }
+
+    /* RECLAMACIONES */
+    .reclamaciones-section { background: var(--gray-light); }
+    .rec-inner { max-width: 700px; margin: 0 auto; }
+    .rec-form {
+      background: var(--white); border-radius: 16px;
+      padding: 32px; box-shadow: 0 4px 20px rgba(0,0,0,0.07);
+    }
+    .rec-form h3 {
+      font-family: 'Sora', sans-serif; font-weight: 700;
+      font-size: 1.1rem; margin-bottom: 20px; color: var(--dark);
+      display: flex; align-items: center; gap: 8px;
+    }
+    .form-row {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 12px; margin-bottom: 12px;
+    }
+    .form-group { display: flex; flex-direction: column; gap: 4px; }
+    .form-group label {
+      font-size: 0.78rem; font-weight: 700;
+      color: var(--gray); font-family: 'Sora', sans-serif;
+      text-transform: uppercase; letter-spacing: 0.5px;
+    }
+    .form-group input, .form-group select, .form-group textarea {
+      padding: 10px 12px;
+      border: 1.5px solid #E5E7EB;
+      border-radius: 8px; font-family: 'Lato', sans-serif;
+      font-size: 0.9rem; outline: none;
+      transition: border-color 0.2s; color: var(--dark);
+      background: var(--off-white);
+    }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+      border-color: var(--red);
+    }
+    .form-group textarea { resize: vertical; min-height: 90px; }
+    .btn-rec {
+      background: var(--red); color: var(--white);
+      font-family: 'Sora', sans-serif; font-weight: 700;
+      padding: 12px 24px; border-radius: 8px; border: none;
+      font-size: 0.9rem; cursor: pointer; margin-top: 8px;
+      transition: background 0.2s;
+    }
+    .btn-rec:hover { background: var(--red-dark); }
+    .rec-note {
+      font-size: 0.78rem; color: var(--gray);
+      margin-top: 12px; line-height: 1.5;
+    }
+
+    /* CONTACT */
+    .contact { background: var(--white); }
+    .contact-inner { max-width: 900px; margin: 0 auto; }
+    .contact-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+    }
+    .contact-card {
+      display: flex; align-items: flex-start; gap: 14px;
+      padding: 20px; border: 1.5px solid #E5E7EB;
+      border-radius: 12px;
+    }
+    .contact-icon {
+      width: 44px; height: 44px; min-width: 44px;
+      background: linear-gradient(135deg, var(--red), var(--red-dark));
+      border-radius: 10px; display: flex; align-items: center;
+      justify-content: center; font-size: 20px;
+    }
+    .contact-info h4 {
+      font-family: 'Sora', sans-serif; font-weight: 700;
+      font-size: 0.85rem; margin-bottom: 4px;
+    }
+    .contact-info a, .contact-info p {
+      font-size: 0.88rem; color: var(--gray);
+      text-decoration: none;
+    }
+    .contact-info a:hover { color: var(--red); }
+
+    /* FOOTER */
+    footer {
+      background: var(--dark); color: rgba(255,255,255,0.7);
+      padding: 40px 24px 24px;
+    }
+    .footer-top {
+      display: flex; justify-content: space-between;
+      align-items: flex-start; flex-wrap: wrap; gap: 32px;
+      max-width: 1100px; margin: 0 auto 32px;
+    }
+    .footer-brand .logo { color: var(--white); margin-bottom: 8px; }
+    .footer-brand p { font-size: 0.84rem; max-width: 260px; line-height: 1.6; }
+    .footer-links h4 {
+      font-family: 'Sora', sans-serif; font-weight: 700;
+      font-size: 0.82rem; color: var(--white);
+      text-transform: uppercase; letter-spacing: 1px;
+      margin-bottom: 12px;
+    }
+    .footer-links ul { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+    .footer-links ul a {
+      color: rgba(255,255,255,0.6); text-decoration: none;
+      font-size: 0.84rem; transition: color 0.2s;
+    }
+    .footer-links ul a:hover { color: var(--gold); }
+    .footer-bottom {
+      max-width: 1100px; margin: 0 auto;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      padding-top: 20px;
+      display: flex; justify-content: space-between;
+      flex-wrap: wrap; gap: 8px;
+      font-size: 0.78rem;
+    }
+
+    /* MODAL */
+    .modal-overlay {
+      display: none; position: fixed; inset: 0;
+      background: rgba(0,0,0,0.6); z-index: 200;
+      align-items: center; justify-content: center;
+      padding: 20px;
+    }
+    .modal-overlay.active { display: flex; }
+    .modal {
+      background: var(--white); border-radius: 16px;
+      padding: 32px; max-width: 600px; width: 100%;
+      max-height: 80vh; overflow-y: auto;
+      position: relative;
+    }
+    .modal h2 {
+      font-size: 1.3rem; margin-bottom: 16px;
+    }
+    .modal p, .modal li {
+      font-size: 0.88rem; color: var(--gray);
+      line-height: 1.7; margin-bottom: 10px;
+    }
+    .modal ul { padding-left: 20px; }
+    .modal-close {
+      position: absolute; top: 16px; right: 16px;
+      background: none; border: none; font-size: 1.4rem;
+      cursor: pointer; color: var(--gray);
+    }
+
+    /* TOAST */
+    .toast {
+      position: fixed; bottom: 24px; right: 24px;
+      background: var(--dark); color: var(--white);
+      padding: 14px 20px; border-radius: 10px;
+      font-family: 'Sora', sans-serif; font-size: 0.88rem;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+      transform: translateY(100px); opacity: 0;
+      transition: all 0.3s; z-index: 300;
+    }
+    .toast.show { transform: translateY(0); opacity: 1; }
+
+    @media (max-width: 600px) {
+      nav ul { display: none; }
+      .form-row { grid-template-columns: 1fr; }
+      .trust-bar { gap: 16px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="logo">
+    <div class="logo-icon">🏠</div>
+    ChambaPe Wasi
+  </a>
+  <ul>
+    <li><a href="#servicios">Servicios</a></li>
+    <li><a href="#como-funciona">¿Cómo funciona?</a></li>
+    <li><a href="#contacto">Contacto</a></li>
+    <li><a href="#reclamaciones">Reclamaciones</a></li>
+    <li><a href="#contratar" class="nav-cta">Contratar técnico</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="inicio">
+  <div class="hero-badge">🇵🇪 Servicio en todo Perú</div>
+  <h1>El técnico llega<br/><span>a tu casa</span></h1>
+  <p>Conectamos clientes con técnicos del hogar calificados en Perú. Rápido, confiable y con garantía de servicio.</p>
+  <div class="hero-btns">
+    <a href="#contratar" class="btn-primary">🔧 Contratar ahora</a>
+    <a href="#servicios" class="btn-secondary">Ver servicios</a>
+  </div>
+</section>
+
+<!-- TRUST BAR -->
+<div class="trust-bar">
+  <div class="trust-item"><span>✅</span> Técnicos verificados</div>
+  <div class="trust-item"><span>⚡</span> Respuesta en 24h</div>
+  <div class="trust-item"><span>🛡️</span> Pagos seguros con Culqi</div>
+  <div class="trust-item"><span>⭐</span> Calificaciones reales</div>
+</div>
+
+<!-- SERVICIOS -->
+<section class="services" id="servicios">
+  <div class="services-inner">
+    <div class="section-label">Nuestros servicios</div>
+    <h2>Todo lo que necesitas para tu hogar</h2>
+    <p class="subtitle">Técnicos profesionales disponibles para los servicios más solicitados en Perú.</p>
+    <div class="services-grid">
+
+      <div class="service-card">
+        <div class="service-icon">⚡</div>
+        <h3>Electricidad</h3>
+        <p>Instalación de tomacorrientes, cableado, tableros eléctricos, luminarias y solución de fallas eléctricas.</p>
+        <div class="service-price">
+          <span class="price-tag">Desde S/ 50</span>
+          <span class="price-note">por visita</span>
+        </div>
+      </div>
+
+      <div class="service-card">
+        <div class="service-icon">🚿</div>
+        <h3>Gasfitería / Plomería</h3>
+        <p>Reparación de tuberías, instalación de grifos, destape de desagües, instalación de termas e inodoros.</p>
+        <div class="service-price">
+          <span class="price-tag">Desde S/ 60</span>
+          <span class="price-note">por visita</span>
+        </div>
+      </div>
+
+      <div class="service-card">
+        <div class="service-icon">🎨</div>
+        <h3>Pintura</h3>
+        <p>Pintura de interiores y exteriores, empaste, lijado, pintura decorativa y acabados de alta calidad.</p>
+        <div class="service-price">
+          <span class="price-tag">Desde S/ 80</span>
+          <span class="price-note">por ambiente</span>
+        </div>
+      </div>
+
+      <div class="service-card">
+        <div class="service-icon">🪚</div>
+        <h3>Carpintería</h3>
+        <p>Instalación y reparación de puertas, ventanas, muebles, closets y todo trabajo en madera para tu hogar.</p>
+        <div class="service-price">
+          <span class="price-tag">Desde S/ 70</span>
+          <span class="price-note">por trabajo</span>
+        </div>
+      </div>
+
+      <div class="service-card">
+        <div class="service-icon">🧹</div>
+        <h3>Limpieza del hogar</h3>
+        <p>Limpieza profunda, lavado de tapizones, desinfección de ambientes, limpieza de cocina y baños.</p>
+        <div class="service-price">
+          <span class="price-tag">Desde S/ 80</span>
+          <span class="price-note">por sesión</span>
+        </div>
+      </div>
+
+      <div class="service-card">
+        <div class="service-icon">🔧</div>
+        <h3>Mantenimiento general</h3>
+        <p>Instalación de aires acondicionados, reparación de electrodomésticos, armado de muebles y más.</p>
+        <div class="service-price">
+          <span class="price-tag">Desde S/ 60</span>
+          <span class="price-note">por visita</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- CÓMO FUNCIONA -->
+<section class="how" id="como-funciona">
+  <div class="how-inner">
+    <div class="section-label">Proceso simple</div>
+    <h2>¿Cómo funciona?</h2>
+    <p class="subtitle">En pocos pasos tienes al técnico en tu casa.</p>
+    <div class="steps">
+      <div class="step">
+        <div class="step-icon">📱</div>
+        <div class="step-num">1</div>
+        <h3>Descarga la app</h3>
+        <p>Disponible para Android. Regístrate gratis en minutos.</p>
+      </div>
+      <div class="step">
+        <div class="step-icon">🔍</div>
+        <div class="step-num">2</div>
+        <h3>Elige el servicio</h3>
+        <p>Selecciona el tipo de trabajo y describe el problema.</p>
+      </div>
+      <div class="step">
+        <div class="step-icon">👨‍🔧</div>
+        <div class="step-num">3</div>
+        <h3>Asignamos técnico</h3>
+        <p>Conectamos con un técnico verificado cercano a tu zona.</p>
+      </div>
+      <div class="step">
+        <div class="step-icon">✅</div>
+        <div class="step-num">4</div>
+        <h3>Paga seguro</h3>
+        <p>Pago en línea seguro con tarjeta, Yape o Plin via Culqi.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTRATAR -->
+<section class="booking" id="contratar">
+  <div class="section-label" style="color: var(--gold);">Solicitar servicio</div>
+  <h2>¿Necesitas un técnico hoy?</h2>
+  <p class="subtitle">Completa el formulario y te contactamos en menos de 24 horas.</p>
+  <div class="booking-form">
+    <input type="text" id="b-nombre" placeholder="Tu nombre completo" required/>
+    <input type="tel" id="b-tel" placeholder="Tu número de WhatsApp" required/>
+    <select id="b-servicio">
+      <option value="" disabled selected>Selecciona el servicio</option>
+      <option>Electricidad</option>
+      <option>Gasfitería / Plomería</option>
+      <option>Pintura</option>
+      <option>Carpintería</option>
+      <option>Limpieza del hogar</option>
+      <option>Mantenimiento general</option>
+    </select>
+    <input type="text" id="b-dir" placeholder="Tu dirección (distrito, ciudad)" required/>
+    <button class="btn-book" onclick="solicitarServicio()">🔧 Solicitar técnico ahora</button>
+  </div>
+</section>
+
+<!-- LEGAL -->
+<section class="legal" id="legal">
+  <div class="legal-inner">
+    <div class="section-label">Información legal</div>
+    <h2>Documentos importantes</h2>
+    <p class="subtitle">Transparencia total con nuestros usuarios.</p>
+    <div class="legal-grid">
+      <div class="legal-card">
+        <h3>📄 Política de Privacidad</h3>
+        <p>Cómo recopilamos, usamos y protegemos tu información personal al usar ChambaPe Wasi.</p>
+        <a href="chambapewasi-privacidad.html" class="legal-link">Leer política completa →</a>
+      </div>
+      <div class="legal-card">
+        <h3>📋 Términos y Condiciones</h3>
+        <p>Reglas de uso de la plataforma, responsabilidades de técnicos y clientes, y condiciones del servicio.</p>
+        <a href="#" onclick="openModal('terminos')" class="legal-link">Leer términos →</a>
+      </div>
+      <div class="legal-card">
+        <h3>🔄 Política de Devoluciones</h3>
+        <p>Procedimiento para reembolsos y devoluciones en caso de inconformidad con el servicio prestado.</p>
+        <a href="#" onclick="openModal('devoluciones')" class="legal-link">Leer política →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- RECLAMACIONES -->
+<section class="reclamaciones-section" id="reclamaciones">
+  <div class="rec-inner">
+    <div class="section-label">Atención al usuario</div>
+    <h2>Libro de Reclamaciones</h2>
+    <p class="subtitle" style="margin-bottom: 28px;">Conforme al Código de Protección y Defensa del Consumidor (Ley N° 29571) y los requisitos de INDECOPI.</p>
+    <div class="rec-form">
+      <h3>📋 Registrar Reclamo o Queja</h3>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Nombre completo *</label>
+          <input type="text" id="r-nombre" placeholder="Tu nombre"/>
+        </div>
+        <div class="form-group">
+          <label>DNI / RUC *</label>
+          <input type="text" id="r-dni" placeholder="00000000"/>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Correo electrónico *</label>
+          <input type="email" id="r-email" placeholder="correo@ejemplo.com"/>
+        </div>
+        <div class="form-group">
+          <label>Teléfono *</label>
+          <input type="tel" id="r-tel" placeholder="+51 000 000 000"/>
+        </div>
+      </div>
+      <div class="form-group" style="margin-bottom:12px">
+        <label>Dirección *</label>
+        <input type="text" id="r-dir" placeholder="Tu dirección completa"/>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Tipo *</label>
+          <select id="r-tipo">
+            <option value="" disabled selected>Seleccionar</option>
+            <option>Reclamo (disconformidad con bien/servicio)</option>
+            <option>Queja (mala atención)</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Fecha del incidente *</label>
+          <input type="date" id="r-fecha"/>
+        </div>
+      </div>
+      <div class="form-group" style="margin-bottom:12px">
+        <label>Descripción del bien o servicio *</label>
+        <input type="text" id="r-bien" placeholder="Ej: Servicio de electricidad - S/ 80"/>
+      </div>
+      <div class="form-group" style="margin-bottom:12px">
+        <label>Detalle del reclamo o queja *</label>
+        <textarea id="r-detalle" placeholder="Describe con detalle lo sucedido..."></textarea>
+      </div>
+      <div class="form-group" style="margin-bottom:12px">
+        <label>Pedido del consumidor *</label>
+        <textarea id="r-pedido" placeholder="¿Qué solución esperas?" style="min-height:60px"></textarea>
+      </div>
+      <button class="btn-rec" onclick="enviarReclamo()">📨 Enviar Reclamo</button>
+      <p class="rec-note">
+        ⚖️ La empresa responderá en un plazo máximo de <strong>30 días calendario</strong> según la Ley N° 29571.<br/>
+        Para más información: <a href="https://www.indecopi.gob.pe" target="_blank" style="color:var(--red);">www.indecopi.gob.pe</a>
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACTO -->
+<section class="contact" id="contacto">
+  <div class="contact-inner">
+    <div class="section-label">Contáctanos</div>
+    <h2>¿Tienes alguna consulta?</h2>
+    <p class="subtitle" style="margin-bottom: 28px;">Estamos disponibles para atenderte.</p>
+    <div class="contact-grid">
+      <div class="contact-card">
+        <div class="contact-icon">📧</div>
+        <div class="contact-info">
+          <h4>Correo electrónico</h4>
+          <a href="mailto:alexisaranap21@gmail.com">alexisaranap21@gmail.com</a>
+        </div>
+      </div>
+      <div class="contact-card">
+        <div class="contact-icon">💬</div>
+        <div class="contact-info">
+          <h4>WhatsApp</h4>
+          <a href="https://wa.me/51982316704" target="_blank">+51 982 316 704</a>
+        </div>
+      </div>
+      <div class="contact-card">
+        <div class="contact-icon">📍</div>
+        <div class="contact-info">
+          <h4>Dirección</h4>
+          <p>Puerto Maldonado, Madre de Dios, Perú</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-top">
+    <div class="footer-brand">
+      <a href="#" class="logo" style="display:inline-flex; margin-bottom:10px;">
+        <div class="logo-icon">🏠</div> ChambaPe Wasi
+      </a>
+      <p>El técnico llega a tu casa. Conectamos clientes con técnicos calificados en Perú.</p>
+    </div>
+    <div class="footer-links">
+      <h4>Servicios</h4>
+      <ul>
+        <li><a href="#servicios">Electricidad</a></li>
+        <li><a href="#servicios">Gasfitería</a></li>
+        <li><a href="#servicios">Pintura</a></li>
+        <li><a href="#servicios">Carpintería</a></li>
+        <li><a href="#servicios">Limpieza</a></li>
+      </ul>
+    </div>
+    <div class="footer-links">
+      <h4>Legal</h4>
+      <ul>
+        <li><a href="chambapewasi-privacidad.html">Política de Privacidad</a></li>
+        <li><a href="#" onclick="openModal('terminos')">Términos y Condiciones</a></li>
+        <li><a href="#" onclick="openModal('devoluciones')">Política de Devoluciones</a></li>
+        <li><a href="#reclamaciones">Libro de Reclamaciones</a></li>
+      </ul>
+    </div>
+    <div class="footer-links">
+      <h4>Contacto</h4>
+      <ul>
+        <li><a href="mailto:alexisaranap21@gmail.com">alexisaranap21@gmail.com</a></li>
+        <li><a href="https://wa.me/51982316704">+51 982 316 704</a></li>
+        <li><a href="#">Puerto Maldonado, MDD</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 ChambaPe Wasi. Todos los derechos reservados.</span>
+    <span>RUC: En trámite | Desarrollado por DevNova AI</span>
+  </div>
+</footer>
+
+<!-- MODAL TERMINOS -->
+<div class="modal-overlay" id="modal-terminos">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('terminos')">✕</button>
+    <h2>📋 Términos y Condiciones</h2>
+    <p><strong>Última actualización:</strong> 30 de marzo de 2026</p>
+    <p>Al usar ChambaPe Wasi, aceptas los siguientes términos:</p>
+    <ul>
+      <li><strong>1. Uso de la plataforma:</strong> ChambaPe Wasi es una plataforma que conecta clientes con técnicos del hogar. No somos empleadores de los técnicos.</li>
+      <li><strong>2. Registro:</strong> Debes proporcionar información veraz al registrarte. Eres responsable de la seguridad de tu cuenta.</li>
+      <li><strong>3. Servicios:</strong> Los precios mostrados son referenciales. El técnico y el cliente acuerdan el precio final antes del servicio.</li>
+      <li><strong>4. Pagos:</strong> Los pagos se procesan de forma segura a través de Culqi. No almacenamos datos de tarjetas.</li>
+      <li><strong>5. Calificaciones:</strong> Las reseñas deben ser honestas y basadas en experiencias reales.</li>
+      <li><strong>6. Prohibiciones:</strong> Queda prohibido el uso de la plataforma para actividades ilegales o fraudulentas.</li>
+      <li><strong>7. Responsabilidad:</strong> ChambaPe Wasi no se responsabiliza por daños causados por técnicos independientes, aunque facilitamos el proceso de reclamación.</li>
+      <li><strong>8. Modificaciones:</strong> Nos reservamos el derecho de modificar estos términos con previo aviso.</li>
+      <li><strong>9. Ley aplicable:</strong> Estos términos se rigen por las leyes de la República del Perú.</li>
+    </ul>
+    <p>Contacto: <a href="mailto:alexisaranap21@gmail.com">alexisaranap21@gmail.com</a></p>
+  </div>
+</div>
+
+<!-- MODAL DEVOLUCIONES -->
+<div class="modal-overlay" id="modal-devoluciones">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('devoluciones')">✕</button>
+    <h2>🔄 Política de Devoluciones y Reembolsos</h2>
+    <p><strong>Última actualización:</strong> 30 de marzo de 2026</p>
+    <p>En ChambaPe Wasi queremos que estés satisfecho con el servicio. Esta es nuestra política:</p>
+    <ul>
+      <li><strong>Cancelación antes del servicio:</strong> Si cancelas antes de que el técnico llegue, se te reembolsará el 100% del monto pagado dentro de 3–5 días hábiles.</li>
+      <li><strong>Insatisfacción con el servicio:</strong> Si el servicio no fue completado correctamente, tienes hasta 48 horas desde la finalización para reportarlo.</li>
+      <li><strong>Proceso de reembolso:</strong> Escríbenos a alexisaranap21@gmail.com o por WhatsApp al +51 982 316 704 con el número de tu pedido y descripción del problema.</li>
+      <li><strong>Evaluación:</strong> Revisaremos tu caso en un plazo máximo de 5 días hábiles.</li>
+      <li><strong>Reembolso aprobado:</strong> Se procesará en 5–10 días hábiles según el método de pago utilizado.</li>
+      <li><strong>Casos no cubiertos:</strong> No se aplican reembolsos si el cliente no estuvo disponible en el horario acordado sin previo aviso.</li>
+    </ul>
+    <p>Para iniciar un reclamo formal, usa nuestro <a href="#reclamaciones" onclick="closeModal('devoluciones')">Libro de Reclamaciones</a>.</p>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 3500);
+  }
+
+  function openModal(id) {
+    document.getElementById('modal-' + id).classList.add('active');
+  }
+
+  function closeModal(id) {
+    document.getElementById('modal-' + id).classList.remove('active');
+  }
+
+  document.querySelectorAll('.modal-overlay').forEach(el => {
+    el.addEventListener('click', e => {
+      if (e.target === el) el.classList.remove('active');
+    });
+  });
+
+  function solicitarServicio() {
+    const nombre = document.getElementById('b-nombre').value.trim();
+    const tel = document.getElementById('b-tel').value.trim();
+    const servicio = document.getElementById('b-servicio').value;
+    const dir = document.getElementById('b-dir').value.trim();
+    if (!nombre || !tel || !servicio || !dir) {
+      showToast('⚠️ Por favor completa todos los campos.');
+      return;
+    }
+    const msg = encodeURIComponent(`Hola ChambaPe Wasi! Soy ${nombre}.\nServicio: ${servicio}\nDirección: ${dir}\nTeléfono: ${tel}`);
+    window.open('https://wa.me/51982316704?text=' + msg, '_blank');
+  }
+
+  function enviarReclamo() {
+    const campos = ['r-nombre','r-dni','r-email','r-tel','r-dir','r-tipo','r-fecha','r-bien','r-detalle','r-pedido'];
+    for (const id of campos) {
+      if (!document.getElementById(id).value.trim()) {
+        showToast('⚠️ Por favor completa todos los campos del reclamo.');
+        return;
+      }
+    }
+    const nombre = document.getElementById('r-nombre').value;
+    const tipo = document.getElementById('r-tipo').value;
+    const detalle = document.getElementById('r-detalle').value;
+    const msg = encodeURIComponent(`[LIBRO DE RECLAMACIONES]\nTipo: ${tipo}\nNombre: ${nombre}\nDetalle: ${detalle}`);
+    window.open('https://wa.me/51982316704?text=' + msg, '_blank');
+    showToast('✅ Reclamo enviado. Te responderemos en 30 días calendario.');
+  }
+</script>
+</body>
+</html>
