@@ -652,17 +652,60 @@
   <div class="rec-inner">
     <div class="section-label">Atención al usuario</div>
     <h2>Libro de Reclamaciones</h2>
-    <p class="subtitle" style="margin-bottom: 28px;">Conforme al Código de Protección y Defensa del Consumidor (Ley N° 29571) y los requisitos de INDECOPI.</p>
-    <div class="rec-form">
-      <h3>📋 Registrar Reclamo o Queja</h3>
+    <p class="subtitle" style="margin-bottom: 28px;">Conforme al Código de Protección y Defensa del Consumidor (Ley N° 29571) y Decreto Supremo N° 011-2011-PCM.</p>
+
+    <!-- DATOS DEL PROVEEDOR -->
+    <div class="rec-form" style="margin-bottom: 20px; background: #fff8f0; border: 1.5px solid #F5A623;">
+      <h3>🏢 Datos del Proveedor</h3>
       <div class="form-row">
         <div class="form-group">
-          <label>Nombre completo *</label>
-          <input type="text" id="r-nombre" placeholder="Tu nombre"/>
+          <label>Razón Social / Nombre Comercial</label>
+          <input type="text" value="ChambaPe Wasi" readonly style="background:#f3f4f6; color:#374151;"/>
         </div>
         <div class="form-group">
-          <label>DNI / RUC *</label>
+          <label>RUC</label>
+          <input type="text" value="10414179709" readonly style="background:#f3f4f6; color:#374151;"/>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Dirección del Establecimiento</label>
+          <input type="text" value="Puerto Maldonado, Madre de Dios, Perú" readonly style="background:#f3f4f6; color:#374151;"/>
+        </div>
+        <div class="form-group">
+          <label>Teléfono / Correo</label>
+          <input type="text" value="+51 982 316 704 | alexisaranap21@gmail.com" readonly style="background:#f3f4f6; color:#374151;"/>
+        </div>
+      </div>
+    </div>
+
+    <div class="rec-form">
+      <h3>📋 Datos del Consumidor y Reclamo</h3>
+
+      <!-- DATOS CONSUMIDOR -->
+      <div class="form-row">
+        <div class="form-group">
+          <label>Nombre y apellidos completos *</label>
+          <input type="text" id="r-nombre" placeholder="Tu nombre completo"/>
+        </div>
+        <div class="form-group">
+          <label>Tipo de documento *</label>
+          <select id="r-tipodoc">
+            <option value="" disabled selected>Seleccionar</option>
+            <option>DNI</option>
+            <option>Carné de Extranjería (CE)</option>
+            <option>Pasaporte</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Número de documento *</label>
           <input type="text" id="r-dni" placeholder="00000000"/>
+        </div>
+        <div class="form-group">
+          <label>Teléfono *</label>
+          <input type="tel" id="r-tel" placeholder="+51 000 000 000"/>
         </div>
       </div>
       <div class="form-row">
@@ -671,21 +714,19 @@
           <input type="email" id="r-email" placeholder="correo@ejemplo.com"/>
         </div>
         <div class="form-group">
-          <label>Teléfono *</label>
-          <input type="tel" id="r-tel" placeholder="+51 000 000 000"/>
+          <label>Domicilio *</label>
+          <input type="text" id="r-dir" placeholder="Tu dirección completa"/>
         </div>
       </div>
-      <div class="form-group" style="margin-bottom:12px">
-        <label>Dirección *</label>
-        <input type="text" id="r-dir" placeholder="Tu dirección completa"/>
-      </div>
+
+      <!-- DATOS DEL RECLAMO -->
       <div class="form-row">
         <div class="form-group">
-          <label>Tipo *</label>
+          <label>Tipo de requerimiento *</label>
           <select id="r-tipo">
             <option value="" disabled selected>Seleccionar</option>
             <option>Reclamo (disconformidad con bien/servicio)</option>
-            <option>Queja (mala atención)</option>
+            <option>Queja (mala atención o trato inadecuado)</option>
           </select>
         </div>
         <div class="form-group">
@@ -693,22 +734,28 @@
           <input type="date" id="r-fecha"/>
         </div>
       </div>
-      <div class="form-group" style="margin-bottom:12px">
-        <label>Descripción del bien o servicio *</label>
-        <input type="text" id="r-bien" placeholder="Ej: Servicio de electricidad - S/ 80"/>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Descripción del bien o servicio *</label>
+          <input type="text" id="r-bien" placeholder="Ej: Servicio de electricidad"/>
+        </div>
+        <div class="form-group">
+          <label>Monto reclamado (S/) *</label>
+          <input type="text" id="r-monto" placeholder="Ej: 80.00 (o 'No aplica')"/>
+        </div>
       </div>
       <div class="form-group" style="margin-bottom:12px">
         <label>Detalle del reclamo o queja *</label>
         <textarea id="r-detalle" placeholder="Describe con detalle lo sucedido..."></textarea>
       </div>
       <div class="form-group" style="margin-bottom:12px">
-        <label>Pedido del consumidor *</label>
-        <textarea id="r-pedido" placeholder="¿Qué solución esperas?" style="min-height:60px"></textarea>
+        <label>Pedido del consumidor (solución esperada) *</label>
+        <textarea id="r-pedido" placeholder="Ej: devolución de dinero, cambio de servicio, mejor atención..." style="min-height:60px"></textarea>
       </div>
       <button class="btn-rec" onclick="enviarReclamo()">📨 Enviar Reclamo</button>
       <p class="rec-note">
-        ⚖️ La empresa responderá en un plazo máximo de <strong>30 días calendario</strong> según la Ley N° 29571.<br/>
-        Para más información: <a href="https://www.indecopi.gob.pe" target="_blank" style="color:var(--red);">www.indecopi.gob.pe</a>
+        ⚖️ Al enviar recibirás un <strong>código de identificación</strong> de tu reclamo. La empresa responderá en un plazo máximo de <strong>30 días calendario</strong> según la Ley N° 29571.<br/>
+        🏛️ Supervisado por <a href="https://www.indecopi.gob.pe" target="_blank" style="color:var(--red);">INDECOPI</a> — No contar con Libro de Reclamaciones puede generar multas de hasta 3 UIT.
       </p>
     </div>
   </div>
@@ -725,7 +772,7 @@
         <div class="contact-icon">📧</div>
         <div class="contact-info">
           <h4>Correo electrónico</h4>
-          <a href="mailto:alexisaranap21@gmail.com">alexisaranap21@gmail.com</a>
+          <a href="/cdn-cgi/l/email-protection#2a4b464f5243594b584b444b5a181b6a4d474b434604494547"><span class="__cf_email__" data-cfemail="84e5e8e1fcedf7e5f6e5eae5f4b6b5c4e3e9e5ede8aae7ebe9">[email&#160;protected]</span></a>
         </div>
       </div>
       <div class="contact-card">
@@ -777,7 +824,7 @@
     <div class="footer-links">
       <h4>Contacto</h4>
       <ul>
-        <li><a href="mailto:alexisaranap21@gmail.com">alexisaranap21@gmail.com</a></li>
+        <li><a href="/cdn-cgi/l/email-protection#8dece1e8f5e4feecffece3ecfdbfbccdeae0ece4e1a3eee2e0"><span class="__cf_email__" data-cfemail="a2c3cec7dacbd1c3d0c3ccc3d29093e2c5cfc3cbce8cc1cdcf">[email&#160;protected]</span></a></li>
         <li><a href="https://wa.me/51982316704">+51 982 316 704</a></li>
         <li><a href="#">Puerto Maldonado, MDD</a></li>
       </ul>
@@ -785,7 +832,7 @@
   </div>
   <div class="footer-bottom">
     <span>© 2026 ChambaPe Wasi. Todos los derechos reservados.</span>
-    <span>RUC: En trámite | Desarrollado por DevNova AI</span>
+    <span>RUC: 10414179709 | Desarrollado por DevNova AI</span>
   </div>
 </footer>
 
@@ -807,7 +854,7 @@
       <li><strong>8. Modificaciones:</strong> Nos reservamos el derecho de modificar estos términos con previo aviso.</li>
       <li><strong>9. Ley aplicable:</strong> Estos términos se rigen por las leyes de la República del Perú.</li>
     </ul>
-    <p>Contacto: <a href="mailto:alexisaranap21@gmail.com">alexisaranap21@gmail.com</a></p>
+    <p>Contacto: <a href="/cdn-cgi/l/email-protection#8feee3eaf7e6fceefdeee1eeffbdbecfe8e2eee6e3a1ece0e2"><span class="__cf_email__" data-cfemail="553439302d3c263427343b34256764153238343c397b363a38">[email&#160;protected]</span></a></p>
   </div>
 </div>
 
@@ -821,7 +868,7 @@
     <ul>
       <li><strong>Cancelación antes del servicio:</strong> Si cancelas antes de que el técnico llegue, se te reembolsará el 100% del monto pagado dentro de 3–5 días hábiles.</li>
       <li><strong>Insatisfacción con el servicio:</strong> Si el servicio no fue completado correctamente, tienes hasta 48 horas desde la finalización para reportarlo.</li>
-      <li><strong>Proceso de reembolso:</strong> Escríbenos a alexisaranap21@gmail.com o por WhatsApp al +51 982 316 704 con el número de tu pedido y descripción del problema.</li>
+      <li><strong>Proceso de reembolso:</strong> Escríbenos a <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="0b6a676e7362786a796a656a7b393a4b6c666a626725686466">[email&#160;protected]</a> o por WhatsApp al +51 982 316 704 con el número de tu pedido y descripción del problema.</li>
       <li><strong>Evaluación:</strong> Revisaremos tu caso en un plazo máximo de 5 días hábiles.</li>
       <li><strong>Reembolso aprobado:</strong> Se procesará en 5–10 días hábiles según el método de pago utilizado.</li>
       <li><strong>Casos no cubiertos:</strong> No se aplican reembolsos si el cliente no estuvo disponible en el horario acordado sin previo aviso.</li>
@@ -833,7 +880,7 @@
 <!-- TOAST -->
 <div class="toast" id="toast"></div>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
   function showToast(msg) {
     const t = document.getElementById('toast');
     t.textContent = msg;
@@ -869,19 +916,43 @@
   }
 
   function enviarReclamo() {
-    const campos = ['r-nombre','r-dni','r-email','r-tel','r-dir','r-tipo','r-fecha','r-bien','r-detalle','r-pedido'];
+    const campos = ['r-nombre','r-tipodoc','r-dni','r-email','r-tel','r-dir','r-tipo','r-fecha','r-bien','r-monto','r-detalle','r-pedido'];
     for (const id of campos) {
       if (!document.getElementById(id).value.trim()) {
         showToast('⚠️ Por favor completa todos los campos del reclamo.');
         return;
       }
     }
+    const codigo = 'CW-' + Date.now().toString().slice(-6);
     const nombre = document.getElementById('r-nombre').value;
+    const tipodoc = document.getElementById('r-tipodoc').value;
+    const dni = document.getElementById('r-dni').value;
+    const email = document.getElementById('r-email').value;
+    const tel = document.getElementById('r-tel').value;
+    const dir = document.getElementById('r-dir').value;
     const tipo = document.getElementById('r-tipo').value;
+    const fecha = document.getElementById('r-fecha').value;
+    const bien = document.getElementById('r-bien').value;
+    const monto = document.getElementById('r-monto').value;
     const detalle = document.getElementById('r-detalle').value;
-    const msg = encodeURIComponent(`[LIBRO DE RECLAMACIONES]\nTipo: ${tipo}\nNombre: ${nombre}\nDetalle: ${detalle}`);
+    const pedido = document.getElementById('r-pedido').value;
+    const msg = encodeURIComponent(
+      '[LIBRO DE RECLAMACIONES - ChambaPe Wasi]\n' +
+      'Código: ' + codigo + '\n' +
+      'Tipo: ' + tipo + '\n' +
+      'Nombre: ' + nombre + '\n' +
+      'Doc: ' + tipodoc + ' ' + dni + '\n' +
+      'Correo: ' + email + '\n' +
+      'Tel: ' + tel + '\n' +
+      'Domicilio: ' + dir + '\n' +
+      'Fecha incidente: ' + fecha + '\n' +
+      'Bien/Servicio: ' + bien + '\n' +
+      'Monto: S/ ' + monto + '\n' +
+      'Detalle: ' + detalle + '\n' +
+      'Pedido: ' + pedido
+    );
     window.open('https://wa.me/51982316704?text=' + msg, '_blank');
-    showToast('✅ Reclamo enviado. Te responderemos en 30 días calendario.');
+    showToast('✅ Tu código de reclamo es: ' + codigo + '. Responderemos en máx. 30 días.');
   }
 </script>
 </body>
