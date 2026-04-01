@@ -169,7 +169,7 @@
     .service-card {
       background: var(--off-white);
       border: 1.5px solid #EEE;
-      border-radius: 16px; padding: 28px 24px;
+      border-radius: 16px; overflow: hidden;
       transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
       cursor: default;
     }
@@ -178,12 +178,17 @@
       box-shadow: 0 12px 32px rgba(232,25,44,0.1);
       border-color: var(--red);
     }
+    .service-img {
+      width: 100%; height: 180px;
+      object-fit: cover; display: block;
+    }
+    .service-card-body { padding: 20px 24px 24px; }
     .service-icon {
-      width: 52px; height: 52px;
+      width: 44px; height: 44px;
       background: linear-gradient(135deg, var(--red), var(--red-dark));
-      border-radius: 14px;
+      border-radius: 12px;
       display: flex; align-items: center; justify-content: center;
-      font-size: 24px; margin-bottom: 16px;
+      font-size: 20px; margin-bottom: 12px;
       box-shadow: 0 4px 12px rgba(232,25,44,0.25);
     }
     .service-card h3 {
@@ -449,6 +454,71 @@
     }
     .toast.show { transform: translateY(0); opacity: 1; }
 
+    /* CULQI PAY BUTTON */
+    .btn-pay {
+      display: block; width: 100%;
+      background: var(--red); color: var(--white);
+      font-family: 'Sora', sans-serif; font-weight: 700;
+      padding: 10px 16px; border-radius: 8px; border: none;
+      font-size: 0.85rem; cursor: pointer; margin-top: 14px;
+      transition: background 0.2s, transform 0.2s;
+      text-align: center;
+    }
+    .btn-pay:hover { background: var(--red-dark); transform: translateY(-1px); }
+
+    /* CHECKOUT MODAL */
+    .checkout-overlay {
+      display: none; position: fixed; inset: 0;
+      background: rgba(0,0,0,0.65); z-index: 500;
+      align-items: center; justify-content: center; padding: 20px;
+    }
+    .checkout-overlay.active { display: flex; }
+    .checkout-box {
+      background: var(--white); border-radius: 20px;
+      padding: 32px; max-width: 440px; width: 100%;
+      position: relative; box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+    }
+    .checkout-box h3 {
+      font-family: 'Sora', sans-serif; font-weight: 800;
+      font-size: 1.2rem; margin-bottom: 4px; color: var(--dark);
+    }
+    .checkout-service-name {
+      color: var(--red); font-family: 'Sora', sans-serif;
+      font-weight: 700; font-size: 1rem; margin-bottom: 20px;
+    }
+    .checkout-amount {
+      background: var(--gray-light); border-radius: 10px;
+      padding: 14px 16px; margin-bottom: 20px;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .checkout-amount span { font-family: 'Sora', sans-serif; font-size: 0.85rem; color: var(--gray); }
+    .checkout-amount strong { font-family: 'Sora', sans-serif; font-weight: 800; font-size: 1.3rem; color: var(--dark); }
+    .checkout-fields { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
+    .checkout-fields input {
+      padding: 12px 14px; border: 1.5px solid #E5E7EB;
+      border-radius: 8px; font-family: 'Lato', sans-serif;
+      font-size: 0.9rem; outline: none; transition: border-color 0.2s;
+    }
+    .checkout-fields input:focus { border-color: var(--red); }
+    .checkout-card-row { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 8px; }
+    .btn-pay-confirm {
+      width: 100%; background: var(--red); color: var(--white);
+      font-family: 'Sora', sans-serif; font-weight: 700;
+      padding: 14px; border-radius: 10px; border: none;
+      font-size: 1rem; cursor: pointer; transition: background 0.2s;
+    }
+    .btn-pay-confirm:hover { background: var(--red-dark); }
+    .checkout-close {
+      position: absolute; top: 14px; right: 14px;
+      background: none; border: none; font-size: 1.4rem;
+      cursor: pointer; color: var(--gray);
+    }
+    .culqi-badge {
+      text-align: center; margin-top: 12px;
+      font-size: 0.75rem; color: var(--gray);
+    }
+    .culqi-badge img { height: 20px; vertical-align: middle; margin-left: 4px; }
+
     @media (max-width: 600px) {
       nav ul { display: none; }
       .form-row { grid-template-columns: 1fr; }
@@ -501,62 +571,86 @@
     <div class="services-grid">
 
       <div class="service-card">
-        <div class="service-icon">⚡</div>
-        <h3>Electricidad</h3>
-        <p>Instalación de tomacorrientes, cableado, tableros eléctricos, luminarias y solución de fallas eléctricas.</p>
-        <div class="service-price">
-          <span class="price-tag">Desde S/ 50</span>
-          <span class="price-note">por visita</span>
+        <img class="service-img" src="https://images.unsplash.com/photo-1621905251189-08b45d6a269e?w=600&q=80" alt="Servicio de electricidad en hogar" loading="lazy"/>
+        <div class="service-card-body">
+          <div class="service-icon">⚡</div>
+          <h3>Electricidad</h3>
+          <p>Instalación de tomacorrientes, cableado, tableros eléctricos, luminarias y solución de fallas eléctricas.</p>
+          <div class="service-price">
+            <span class="price-tag">Desde S/ 50</span>
+            <span class="price-note">por visita</span>
+          </div>
+          <button class="btn-pay" onclick="abrirCheckout('Electricidad', 50)">💳 Contratar y pagar</button>
         </div>
       </div>
 
       <div class="service-card">
-        <div class="service-icon">🚿</div>
-        <h3>Gasfitería / Plomería</h3>
-        <p>Reparación de tuberías, instalación de grifos, destape de desagües, instalación de termas e inodoros.</p>
-        <div class="service-price">
-          <span class="price-tag">Desde S/ 60</span>
-          <span class="price-note">por visita</span>
+        <img class="service-img" src="https://images.unsplash.com/photo-1585771724684-38269d6639fd?w=600&q=80" alt="Servicio de gasfitería y plomería" loading="lazy"/>
+        <div class="service-card-body">
+          <div class="service-icon">🚿</div>
+          <h3>Gasfitería / Plomería</h3>
+          <p>Reparación de tuberías, instalación de grifos, destape de desagües, instalación de termas e inodoros.</p>
+          <div class="service-price">
+            <span class="price-tag">Desde S/ 60</span>
+            <span class="price-note">por visita</span>
+          </div>
+          <button class="btn-pay" onclick="abrirCheckout('Gasfitería / Plomería', 60)">💳 Contratar y pagar</button>
         </div>
       </div>
 
       <div class="service-card">
-        <div class="service-icon">🎨</div>
-        <h3>Pintura</h3>
-        <p>Pintura de interiores y exteriores, empaste, lijado, pintura decorativa y acabados de alta calidad.</p>
-        <div class="service-price">
-          <span class="price-tag">Desde S/ 80</span>
-          <span class="price-note">por ambiente</span>
+        <img class="service-img" src="https://images.unsplash.com/photo-1562259949-e8e7689d7828?w=600&q=80" alt="Servicio de pintura de interiores" loading="lazy"/>
+        <div class="service-card-body">
+          <div class="service-icon">🎨</div>
+          <h3>Pintura</h3>
+          <p>Pintura de interiores y exteriores, empaste, lijado, pintura decorativa y acabados de alta calidad.</p>
+          <div class="service-price">
+            <span class="price-tag">Desde S/ 80</span>
+            <span class="price-note">por ambiente</span>
+          </div>
+          <button class="btn-pay" onclick="abrirCheckout('Pintura', 80)">💳 Contratar y pagar</button>
         </div>
       </div>
 
       <div class="service-card">
-        <div class="service-icon">🪚</div>
-        <h3>Carpintería</h3>
-        <p>Instalación y reparación de puertas, ventanas, muebles, closets y todo trabajo en madera para tu hogar.</p>
-        <div class="service-price">
-          <span class="price-tag">Desde S/ 70</span>
-          <span class="price-note">por trabajo</span>
+        <img class="service-img" src="https://images.unsplash.com/photo-1504148455328-c376907d081c?w=600&q=80" alt="Servicio de carpintería en hogar" loading="lazy"/>
+        <div class="service-card-body">
+          <div class="service-icon">🪚</div>
+          <h3>Carpintería</h3>
+          <p>Instalación y reparación de puertas, ventanas, muebles, closets y todo trabajo en madera para tu hogar.</p>
+          <div class="service-price">
+            <span class="price-tag">Desde S/ 70</span>
+            <span class="price-note">por trabajo</span>
+          </div>
+          <button class="btn-pay" onclick="abrirCheckout('Carpintería', 70)">💳 Contratar y pagar</button>
         </div>
       </div>
 
       <div class="service-card">
-        <div class="service-icon">🧹</div>
-        <h3>Limpieza del hogar</h3>
-        <p>Limpieza profunda, lavado de tapizones, desinfección de ambientes, limpieza de cocina y baños.</p>
-        <div class="service-price">
-          <span class="price-tag">Desde S/ 80</span>
-          <span class="price-note">por sesión</span>
+        <img class="service-img" src="https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=600&q=80" alt="Servicio de limpieza del hogar" loading="lazy"/>
+        <div class="service-card-body">
+          <div class="service-icon">🧹</div>
+          <h3>Limpieza del hogar</h3>
+          <p>Limpieza profunda, lavado de tapizones, desinfección de ambientes, limpieza de cocina y baños.</p>
+          <div class="service-price">
+            <span class="price-tag">Desde S/ 80</span>
+            <span class="price-note">por sesión</span>
+          </div>
+          <button class="btn-pay" onclick="abrirCheckout('Limpieza del hogar', 80)">💳 Contratar y pagar</button>
         </div>
       </div>
 
       <div class="service-card">
-        <div class="service-icon">🔧</div>
-        <h3>Mantenimiento general</h3>
-        <p>Instalación de aires acondicionados, reparación de electrodomésticos, armado de muebles y más.</p>
-        <div class="service-price">
-          <span class="price-tag">Desde S/ 60</span>
-          <span class="price-note">por visita</span>
+        <img class="service-img" src="https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=600&q=80" alt="Servicio de mantenimiento general del hogar" loading="lazy"/>
+        <div class="service-card-body">
+          <div class="service-icon">🔧</div>
+          <h3>Mantenimiento general</h3>
+          <p>Instalación de aires acondicionados, reparación de electrodomésticos, armado de muebles y más.</p>
+          <div class="service-price">
+            <span class="price-tag">Desde S/ 60</span>
+            <span class="price-note">por visita</span>
+          </div>
+          <button class="btn-pay" onclick="abrirCheckout('Mantenimiento general', 60)">💳 Contratar y pagar</button>
         </div>
       </div>
 
@@ -793,6 +887,35 @@
   </div>
 </section>
 
+<!-- CREDENCIALES DE PRUEBA PARA REVISIÓN -->
+<section style="background:#FFF8E1; border-top: 3px solid #F5A623; padding: 32px 24px;">
+  <div style="max-width:700px; margin:0 auto; text-align:center;">
+    <div style="font-family:'Sora',sans-serif; font-size:0.75rem; font-weight:700; color:#B7791F; text-transform:uppercase; letter-spacing:2px; margin-bottom:8px;">🔐 Credenciales de prueba (solo para revisión)</div>
+    <h2 style="font-family:'Sora',sans-serif; font-size:1.3rem; font-weight:800; color:#1A1A2E; margin-bottom:16px;">Datos para validar el flujo de pago</h2>
+    <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:16px; text-align:left;">
+      <div style="background:white; border-radius:12px; padding:18px; border:1.5px solid #F5A623;">
+        <div style="font-family:'Sora',sans-serif; font-weight:700; font-size:0.85rem; color:#B7791F; margin-bottom:10px;">💳 Tarjeta de prueba Culqi</div>
+        <div style="font-size:0.85rem; line-height:2; font-family:'Lato',sans-serif;">
+          <strong>Número:</strong> 4111 1111 1111 1111<br/>
+          <strong>Vencimiento:</strong> 09/25<br/>
+          <strong>CVV:</strong> 123<br/>
+          <strong>Cuotas:</strong> 1
+        </div>
+      </div>
+      <div style="background:white; border-radius:12px; padding:18px; border:1.5px solid #F5A623;">
+        <div style="font-family:'Sora',sans-serif; font-weight:700; font-size:0.85rem; color:#B7791F; margin-bottom:10px;">👤 Usuario de prueba</div>
+        <div style="font-size:0.85rem; line-height:2; font-family:'Lato',sans-serif;">
+          <strong>Email:</strong> test@chambapewasi.com<br/>
+          <strong>Nombre:</strong> Usuario Prueba<br/>
+          <strong>Servicio:</strong> Electricidad (S/ 50)<br/>
+          <strong>Flujo:</strong> Click "Contratar y pagar"
+        </div>
+      </div>
+    </div>
+    <p style="font-size:0.78rem; color:#92400E; margin-top:14px; font-family:'Lato',sans-serif;">Estos datos son exclusivamente para validación del comercio. No se realizarán cobros reales.</p>
+  </div>
+</section>
+
 <!-- FOOTER -->
 <footer>
   <div class="footer-top">
@@ -880,7 +1003,104 @@
 <!-- TOAST -->
 <div class="toast" id="toast"></div>
 
+<!-- CHECKOUT MODAL CULQI -->
+<div class="checkout-overlay" id="checkout-modal">
+  <div class="checkout-box">
+    <button class="checkout-close" onclick="cerrarCheckout()">✕</button>
+    <h3>💳 Pago seguro</h3>
+    <div class="checkout-service-name" id="checkout-servicio-nombre"></div>
+    <div class="checkout-amount">
+      <span>Total a pagar</span>
+      <strong id="checkout-monto-display">S/ 0.00</strong>
+    </div>
+    <div class="checkout-fields">
+      <input type="text" id="co-nombre" placeholder="Nombre completo" />
+      <input type="email" id="co-email" placeholder="Correo electrónico" />
+      <input type="text" id="co-numero" placeholder="Número de tarjeta" maxlength="19" oninput="formatCard(this)" />
+      <div class="checkout-card-row">
+        <input type="text" id="co-expiry" placeholder="MM/AA" maxlength="5" oninput="formatExpiry(this)" />
+        <input type="text" id="co-cvv" placeholder="CVV" maxlength="4" />
+        <input type="text" id="co-cuotas" placeholder="Cuotas" value="1" />
+      </div>
+    </div>
+    <button class="btn-pay-confirm" onclick="procesarPago()">🔒 Pagar ahora</button>
+    <div class="culqi-badge">Pago seguro procesado por <strong>Culqi</strong> 🔒</div>
+  </div>
+</div>
+
+<!-- CULQI JS -->
+<script src="https://checkout.culqi.com/js/v4"></script>
+
 <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+  // CULQI CONFIG
+  Culqi.publicKey = 'pk_test_TfcF7RfO5xNAQHrD';
+  Culqi.settings({
+    title: 'ChambaPe Wasi',
+    currency: 'PEN',
+    description: 'Servicio técnico del hogar',
+  });
+
+  let montoActual = 0;
+  let servicioActual = '';
+
+  function abrirCheckout(servicio, monto) {
+    servicioActual = servicio;
+    montoActual = monto;
+    document.getElementById('checkout-servicio-nombre').textContent = servicio;
+    document.getElementById('checkout-monto-display').textContent = 'S/ ' + monto.toFixed(2);
+    document.getElementById('checkout-modal').classList.add('active');
+  }
+
+  function cerrarCheckout() {
+    document.getElementById('checkout-modal').classList.remove('active');
+  }
+
+  function formatCard(input) {
+    let v = input.value.replace(/\D/g, '').substring(0, 16);
+    input.value = v.replace(/(.{4})/g, '$1 ').trim();
+  }
+
+  function formatExpiry(input) {
+    let v = input.value.replace(/\D/g, '').substring(0, 4);
+    if (v.length >= 2) v = v.substring(0,2) + '/' + v.substring(2);
+    input.value = v;
+  }
+
+  function procesarPago() {
+    const nombre = document.getElementById('co-nombre').value.trim();
+    const email = document.getElementById('co-email').value.trim();
+    const numero = document.getElementById('co-numero').value.replace(/\s/g, '');
+    const expiry = document.getElementById('co-expiry').value;
+    const cvv = document.getElementById('co-cvv').value.trim();
+    const cuotas = document.getElementById('co-cuotas').value.trim() || '1';
+
+    if (!nombre || !email || !numero || !expiry || !cvv) {
+      showToast('⚠️ Por favor completa todos los campos.');
+      return;
+    }
+
+    const [mes, anio] = expiry.split('/');
+
+    Culqi.createToken({
+      card_number: numero,
+      cvv: cvv,
+      expiration_month: mes,
+      expiration_year: '20' + anio,
+      email: email,
+    });
+  }
+
+  function culqi() {
+    if (Culqi.token) {
+      const token = Culqi.token.id;
+      cerrarCheckout();
+      showToast('✅ Pago procesado. ¡Tu técnico será asignado pronto!');
+    } else {
+      const error = Culqi.error;
+      showToast('❌ Error: ' + (error.user_message || 'Verifica los datos de tu tarjeta.'));
+    }
+  }
+
   function showToast(msg) {
     const t = document.getElementById('toast');
     t.textContent = msg;
