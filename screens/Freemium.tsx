@@ -8,18 +8,24 @@ const SUPABASE_KEY = process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY || '';
 interface Props {
   onBack: () => void;
   onPagoExitoso: () => void;
+  onIrLogin: () => void;
+  onIrRegistro: () => void;
   deviceId: string;
+  userId?: string;
 }
 
-export default function Freemium({ onBack, onPagoExitoso, deviceId }: Props) {
+export default function Freemium({ onBack, onPagoExitoso, onIrLogin, onIrRegistro, deviceId, userId }: Props) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
   const handlePago = async () => {
+    if (!userId) {
+      setError('Debes iniciar sesión antes de suscribirte');
+      return;
+    }
     setLoading(true);
     setError('');
     try {
-      // Abrir Culqi checkout
       const { Culqi } = await import('culqi-react-native');
       Culqi.setPublicKey(CULQI_PUBLIC_KEY);
       const token = await Culqi.createToken({
@@ -30,7 +36,6 @@ export default function Freemium({ onBack, onPagoExitoso, deviceId }: Props) {
       });
 
       if (token?.id) {
-        // Llamar a Edge Function para procesar el pago
         const res = await fetch(`${SUPABASE_URL}/functions/v1/culqi-charge-presupia`, {
           method: 'POST',
           headers: {
@@ -40,6 +45,7 @@ export default function Freemium({ onBack, onPagoExitoso, deviceId }: Props) {
           body: JSON.stringify({
             token: token.id,
             device_id: deviceId,
+            user_id: userId,
             amount: 2990,
           }),
         });
@@ -71,7 +77,7 @@ export default function Freemium({ onBack, onPagoExitoso, deviceId }: Props) {
         <Text style={s.periodo}>/mes</Text>
         <View style={s.beneficios}>
           <Text style={s.beneficio}>✅ Análisis ilimitados</Text>
-          <Text style={s.beneficio}>✅ Claude Opus (máxima precisión)</Text>
+          <Text style={s.beneficio}>✅ Claude Sonnet (máxima precisión)</Text>
           <Text style={s.beneficio}>✅ Historial de presupuestos</Text>
           <Text style={s.beneficio}>✅ Exportar PDF ilimitado</Text>
           <Text style={s.beneficio}>✅ Lista de materiales completa</Text>
@@ -81,12 +87,24 @@ export default function Freemium({ onBack, onPagoExitoso, deviceId }: Props) {
 
       {error ? <Text style={s.error}>{error}</Text> : null}
 
-      <TouchableOpacity style={s.btnPago} onPress={handlePago} disabled={loading}>
-        {loading
-          ? <ActivityIndicator color="#0D1117" />
-          : <Text style={s.btnPagoText}>💳 Suscribirse ahora</Text>
-        }
-      </TouchableOpacity>
+      {!userId ? (
+        <View style={s.authContainer}>
+          <Text style={s.authTexto}>Para suscribirte necesitas una cuenta</Text>
+          <TouchableOpacity style={s.btnRegistro} onPress={onIrRegistro}>
+            <Text style={s.btnRegistroText}>Crear cuenta gratis</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={s.btnLogin} onPress={onIrLogin}>
+            <Text style={s.btnLoginText}>Ya tengo cuenta — Iniciar sesión</Text>
+          </TouchableOpacity>
+        </View>
+      ) : (
+        <TouchableOpacity style={s.btnPago} onPress={handlePago} disabled={loading}>
+          {loading
+            ? <ActivityIndicator color="#0D1117" />
+            : <Text style={s.btnPagoText}>💳 Suscribirse ahora</Text>
+          }
+        </TouchableOpacity>
+      )}
 
       <Text style={s.nota}>Pago seguro con Culqi. Cancela cuando quieras.</Text>
     </View>
@@ -105,7 +123,13 @@ const s = StyleSheet.create({
   beneficios: { gap: 10 },
   beneficio: { fontSize: 15, color: '#E6EDF3' },
   error: { color: '#FF6B6B', fontSize: 13, marginBottom: 12, textAlign: 'center' },
+  authContainer: { gap: 12, marginBottom: 16 },
+  authTexto: { fontSize: 14, color: '#8B949E', textAlign: 'center', marginBottom: 4 },
+  btnRegistro: { backgroundColor: '#00C896', borderRadius: 14, padding: 18, alignItems: 'center' },
+  btnRegistroText: { fontSize: 16, fontWeight: '800', color: '#0D1117' },
+  btnLogin: { alignItems: 'center', padding: 12, borderRadius: 14, borderWidth: 1, borderColor: '#30363D' },
+  btnLoginText: { color: '#00C896', fontSize: 14, fontWeight: '600' },
   btnPago: { backgroundColor: '#00C896', borderRadius: 16, padding: 20, alignItems: 'center', marginBottom: 16 },
   btnPagoText: { fontSize: 18, fontWeight: '800', color: '#0D1117' },
-  nota: { fontSize: 12, color: '#8B949E', textAlign: 'center' },
+  nota: { fontSize: 12, color: '#8B949E', textAlign: 'center', marginTop: 12 },
 });

@@ -1,4 +1,4 @@
-﻿import { StatusBar } from 'expo-status-bar';
+import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, TouchableOpacity, ScrollView } from 'react-native';
 import { useState } from 'react';
 import SubirPlano from './screens/SubirPlano';
@@ -9,6 +9,8 @@ import Historial from './screens/Historial';
 import ListaCompras from './screens/ListaCompras';
 import Configuracion from './screens/Configuracion';
 import Freemium from './screens/Freemium';
+import Login from './screens/Login';
+import Registro from './screens/Registro';
 import { useFreemium } from './hooks/useFreemium';
 
 const SUPABASE_URL = 'https://tnrqdyagfecceeebocvn.supabase.co';
@@ -46,7 +48,9 @@ export default function App() {
   const [presupuesto, setPresupuesto] = useState<any>(null);
   const [idioma, setIdioma] = useState<'es' | 'en'>('es');
   const [config, setConfig] = useState({ ciudad: 'Lima', pisos: 1, tipoObra: 'casa' });
-  const { puedeAnalizar, analisisRestantes, esPro, deviceId, registrarAnalisis, activarPro } = useFreemium();
+  const [userId, setUserId] = useState('');
+  const [userEmail, setUserEmail] = useState('');
+  const { puedeAnalizar, analisisRestantes, esPro, deviceId, registrarAnalisis, activarPro, vincularUsuario } = useFreemium();
 
   const t = {
     es: {
@@ -75,6 +79,36 @@ export default function App() {
     },
   }[idioma];
 
+  const handleLoginExitoso = (id: string, email: string) => {
+  setUserId(id);
+  setUserEmail(email);
+  vincularUsuario(id);
+  setPantalla('freemium');
+};
+
+const handleRegistroExitoso = (id: string, email: string) => {
+  setUserId(id);
+  setUserEmail(email);
+  vincularUsuario(id);
+  setPantalla('freemium');
+};
+
+  if (pantalla === 'login') return (
+    <Login
+      onLoginExitoso={handleLoginExitoso}
+      onRegistro={() => setPantalla('registro')}
+      onBack={() => setPantalla('freemium')}
+    />
+  );
+
+  if (pantalla === 'registro') return (
+    <Registro
+      onRegistroExitoso={handleRegistroExitoso}
+      onLogin={() => setPantalla('login')}
+      onBack={() => setPantalla('freemium')}
+    />
+  );
+
   if (pantalla === 'subir') return (
     <SubirPlano
       onBack={() => setPantalla('home')}
@@ -99,7 +133,14 @@ export default function App() {
   );
 
   if (pantalla === 'freemium') return (
-    <Freemium onBack={() => setPantalla('home')} onPagoExitoso={() => { activarPro(); setPantalla('home'); }} deviceId={deviceId} />
+    <Freemium
+      onBack={() => setPantalla('home')}
+      onPagoExitoso={() => { activarPro(); setPantalla('home'); }}
+      onIrLogin={() => setPantalla('login')}
+      onIrRegistro={() => setPantalla('registro')}
+      deviceId={deviceId}
+      userId={userId}
+    />
   );
 
   if (pantalla === 'configuracion') return (
@@ -107,11 +148,24 @@ export default function App() {
   );
 
   if (pantalla === 'resultado') return (
-    <Resultado presupuesto={presupuesto} onBack={() => setPantalla('home')} onListaCompras={() => setPantalla('listacompras')} />
+    <Resultado key={presupuesto?.total + presupuesto?.area} presupuesto={presupuesto} onBack={() => setPantalla('home')} onListaCompras={() => setPantalla('listacompras')} />
   );
 
   if (pantalla === 'historial') return (
-    <Historial onBack={() => setPantalla('home')} onVer={() => setPantalla('resultado')} />
+    <Historial
+      onBack={() => setPantalla('home')}
+      onVer={(item: any) => {
+        setPresupuesto({
+          ciudad: item.ciudad,
+          zona: item.zona,
+          area: item.area,
+          total: item.total,
+          partidas: item.partidas || [],
+          materiales: item.materiales || [],
+        });
+        setPantalla('resultado');
+      }}
+    />
   );
 
   if (pantalla === 'listacompras') return (
@@ -133,6 +187,12 @@ export default function App() {
           <Text style={styles.idiomaBtnText}>Config</Text>
         </TouchableOpacity>
       </View>
+
+      {userEmail ? (
+        <View style={styles.userBadge}>
+          <Text style={styles.userBadgeText}>👤 {userEmail}</Text>
+        </View>
+      ) : null}
 
       <TouchableOpacity style={styles.btnPrimary} onPress={() => { if (puedeAnalizar) { setPantalla('subir'); } else { setPantalla('freemium'); } }}>
         <Text style={styles.btnPrimaryIcon}>+</Text>
@@ -188,6 +248,8 @@ const styles = StyleSheet.create({
   tagline: { fontSize: 14, color: '#8B949E', marginTop: 4 },
   idiomaBtn: { backgroundColor: '#161B22', borderRadius: 20, paddingHorizontal: 14, paddingVertical: 8, borderWidth: 1, borderColor: '#30363D' },
   idiomaBtnText: { fontSize: 13, color: '#E6EDF3', fontWeight: '600' },
+  userBadge: { backgroundColor: '#161B22', borderRadius: 10, padding: 10, marginBottom: 16, borderWidth: 1, borderColor: '#30363D' },
+  userBadgeText: { color: '#8B949E', fontSize: 13 },
   btnPrimary: { backgroundColor: '#00C896', borderRadius: 16, padding: 24, alignItems: 'center', marginBottom: 24 },
   btnPrimaryIcon: { fontSize: 40, marginBottom: 8 },
   btnPrimaryText: { fontSize: 20, fontWeight: '700', color: '#0D1117' },
