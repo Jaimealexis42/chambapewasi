@@ -1,0 +1,27 @@
+# Supabase Project Configuration
+# Project: PresupIA
+
+[project]
+project_id = "tnrqdyagfecceeebocvn"
+
+[api]
+# Proxy settings for local development
+enabled = true
+
+[db]
+# Database settings
+major_version = 15
+
+[realtime]
+enabled = true
+max_bytes_per_second = 1000000
+
+[studio]
+enabled = true
+
+[functions]
+# Edge Functions configuration
+lang = "typescript"
+
+[[functions.validar-analisis]]
+name = "validar-analisis"
