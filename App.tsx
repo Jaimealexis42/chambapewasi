@@ -128,6 +128,9 @@ const handleRegistroExitoso = (id: string, email: string) => {
       archivo={archivo}
       config={config}
       tipoPlano={tipoPlano}
+      userId={userId}
+      deviceId={deviceId}
+      esPro={esPro}
       onDone={(result) => { setPresupuesto(result); registrarAnalisis(); guardarHistorial(deviceId, result); setPantalla('resultado'); }}
     />
   );

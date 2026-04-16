@@ -1,6 +1,7 @@
 import { StyleSheet, Text, View, ActivityIndicator, ScrollView, TouchableOpacity } from 'react-native';
 import { useEffect, useState, useRef } from 'react';
 import * as ImageManipulator from 'expo-image-manipulator';
+import { useServerValidation } from '../hooks/useServerValidation';
 
 const API_KEY = process.env.EXPO_PUBLIC_ANTHROPIC_API_KEY || '';
 const ZONAS_SISMICAS: Record<string, string> = {
@@ -124,10 +125,11 @@ function getPrompt(ciudad: string, tipoObra: string, pisos: number, zona: string
     '{"ciudad":"' + ciudad + '","zona":"' + zona + '","area":"XX m2","total":"S/ XX,XXX","partidas":[{"nombre":"NOMBRE","monto":"S/ XX,XXX","porcentaje":"XX%","subpartidas":[{"nombre":"Sub","unidad":"m3","metrado":1.0,"apu":{"manoObra":8.50,"materiales":2.50,"equipos":1.50},"detalle":[{"desc":"Desc","cant":"1.0 m3"}]}]}],"materiales":[{"categoria":"Cat","icono":"icon","items":[{"nombre":"Mat","cantidad":1,"unidad":"kg","precioUnit":4.80}]}]}';
 }
 
-export default function Procesando({ archivo, onDone, onBack, config, tipoPlano }: { archivo: any; onDone: (result: any) => void; onBack?: () => void; config?: any; tipoPlano?: string }) {
+export default function Procesando({ archivo, onDone, onBack, config, tipoPlano, userId, deviceId, esPro }: { archivo: any; onDone: (result: any) => void; onBack?: () => void; config?: any; tipoPlano?: string; userId?: string; deviceId?: string; esPro?: boolean }) {
   const [paso, setPaso] = useState(0);
   const [error, setError] = useState('');
   const [errorTipo, setErrorTipo] = useState<'timeout' | 'imagen' | 'general'>('general');
+  const { validarYRegistrarAnalisis } = useServerValidation();
 
   const ciudad = config?.ciudad || 'Lima';
   const tipoObra = config?.tipoObra || 'casa';
@@ -147,8 +149,15 @@ export default function Procesando({ archivo, onDone, onBack, config, tipoPlano 
       );
 
       const trabajoPromise = async () => {
-        if (!API_KEY) throw new Error('API KEY no configurada - KEY: ' + API_KEY);
-console.log('API KEY:', API_KEY?.substring(0, 10));
+        if (!API_KEY) throw new Error('API KEY no configurada');
+
+        // Server-side validation: check freemium limits and register analysis
+        if (userId && deviceId) {
+          const validacion = await validarYRegistrarAnalisis(userId, deviceId);
+          if (!validacion.permitido) {
+            throw new Error('LIMITE_ALCANZADO');
+          }
+        }
 
         const prompt = getPrompt(ciudad, tipoObra, pisos, zona, tipo, altura);
         let messages: any[];
@@ -216,6 +225,9 @@ console.log('API KEY:', API_KEY?.substring(0, 10));
         } else if (msg === 'JSON_INVALIDO' || msg === 'RESPUESTA_VACIA') {
           setErrorTipo('imagen');
           setError('No pudimos analizar la imagen. Intenta con una foto mas nitida y bien iluminada del plano.');
+        } else if (msg === 'LIMITE_ALCANZADO') {
+          setErrorTipo('general');
+          setError('Has alcanzado el limite de analisis gratuitos. Suscribete a Pro para analisis ilimitados.');
         } else {
           setErrorTipo('general');
           setError('Ocurrio un error inesperado. Verifica tu conexion e intenta de nuevo.');

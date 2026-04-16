@@ -18,6 +18,8 @@ export default function Registro({ onRegistroExitoso, onLogin, onBack }: Props) 
   const [confirmar, setConfirmar] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [verificacionEnviada, setVerificacionEnviada] = useState(false);
+  const [emailVerificando, setEmailVerificando] = useState('');
 
   const handleRegistro = async () => {
     if (!email.trim() || !password.trim() || !confirmar.trim()) {
@@ -38,6 +40,9 @@ export default function Registro({ onRegistroExitoso, onLogin, onBack }: Props) 
       const { data, error: err } = await supabase.auth.signUp({
         email: email.trim().toLowerCase(),
         password,
+        options: {
+          emailRedirectTo: 'com.presupia.app://verify-email',
+        },
       });
       if (err) {
         if (err.message.includes('already registered')) {
@@ -48,7 +53,8 @@ export default function Registro({ onRegistroExitoso, onLogin, onBack }: Props) 
         return;
       }
       if (data.user) {
-        onRegistroExitoso(data.user.id, data.user.email || '');
+        setVerificacionEnviada(true);
+        setEmailVerificando(data.user.email || '');
       }
     } catch (e: any) {
       setError('Error de conexión. Verifica tu internet.');
@@ -65,55 +71,79 @@ export default function Registro({ onRegistroExitoso, onLogin, onBack }: Props) 
         </TouchableOpacity>
 
         <Text style={s.logo}>PresupIA</Text>
-        <Text style={s.titulo}>Crear cuenta</Text>
-        <Text style={s.subtitulo}>Gratis — activa tu plan Pro después</Text>
+        {verificacionEnviada ? (
+          <>
+            <Text style={s.titulo}>Verifica tu correo</Text>
+            <Text style={s.subtitulo}>Hemos enviado un enlace de verificación</Text>
+          </>
+        ) : (
+          <>
+            <Text style={s.titulo}>Crear cuenta</Text>
+            <Text style={s.subtitulo}>Gratis — activa tu plan Pro después</Text>
+          </>
+        )}
 
-        <View style={s.form}>
-          <Text style={s.label}>Correo electrónico</Text>
-          <TextInput
-            style={s.input}
-            placeholder="tucorreo@email.com"
-            placeholderTextColor="#5A6472"
-            value={email}
-            onChangeText={setEmail}
-            keyboardType="email-address"
-            autoCapitalize="none"
-            autoCorrect={false}
-          />
+        {verificacionEnviada ? (
+          <View style={s.form}>
+            <View style={s.verificacionBox}>
+              <Text style={s.verificacionIcon}>📧</Text>
+              <Text style={s.verificacionTexto}>Hemos enviado un enlace de verificación a:</Text>
+              <Text style={s.emailDestino}>{emailVerificando}</Text>
+              <Text style={s.verificacionTexto}>Revisa tu bandeja de entrada (y spam) y haz clic en el enlace para verificar tu correo.</Text>
+              <Text style={s.verificacionTexto}>Una vez verificado, podrás acceder a PresupIA sin restricciones.</Text>
+            </View>
+            <TouchableOpacity style={s.btnLogin} onPress={onLogin}>
+              <Text style={s.btnLoginText}>← Volver a iniciar sesión</Text>
+            </TouchableOpacity>
+          </View>
+        ) : (
+          <View style={s.form}>
+            <Text style={s.label}>Correo electrónico</Text>
+            <TextInput
+              style={s.input}
+              placeholder="tucorreo@email.com"
+              placeholderTextColor="#5A6472"
+              value={email}
+              onChangeText={setEmail}
+              keyboardType="email-address"
+              autoCapitalize="none"
+              autoCorrect={false}
+            />
 
-          <Text style={s.label}>Contraseña</Text>
-          <TextInput
-            style={s.input}
-            placeholder="Mínimo 6 caracteres"
-            placeholderTextColor="#5A6472"
-            value={password}
-            onChangeText={setPassword}
-            secureTextEntry
-          />
+            <Text style={s.label}>Contraseña</Text>
+            <TextInput
+              style={s.input}
+              placeholder="Mínimo 6 caracteres"
+              placeholderTextColor="#5A6472"
+              value={password}
+              onChangeText={setPassword}
+              secureTextEntry
+            />
 
-          <Text style={s.label}>Confirmar contraseña</Text>
-          <TextInput
-            style={s.input}
-            placeholder="Repite tu contraseña"
-            placeholderTextColor="#5A6472"
-            value={confirmar}
-            onChangeText={setConfirmar}
-            secureTextEntry
-          />
+            <Text style={s.label}>Confirmar contraseña</Text>
+            <TextInput
+              style={s.input}
+              placeholder="Repite tu contraseña"
+              placeholderTextColor="#5A6472"
+              value={confirmar}
+              onChangeText={setConfirmar}
+              secureTextEntry
+            />
 
-          {error ? <Text style={s.error}>{error}</Text> : null}
+            {error ? <Text style={s.error}>{error}</Text> : null}
 
-          <TouchableOpacity style={s.btnRegistro} onPress={handleRegistro} disabled={loading}>
-            {loading
-              ? <ActivityIndicator color="#0D1117" />
-              : <Text style={s.btnRegistroText}>Crear cuenta</Text>
-            }
-          </TouchableOpacity>
+            <TouchableOpacity style={s.btnRegistro} onPress={handleRegistro} disabled={loading}>
+              {loading
+                ? <ActivityIndicator color="#0D1117" />
+                : <Text style={s.btnRegistroText}>Crear cuenta</Text>
+              }
+            </TouchableOpacity>
 
-          <TouchableOpacity style={s.btnLogin} onPress={onLogin}>
-            <Text style={s.btnLoginText}>¿Ya tienes cuenta? Iniciar sesión</Text>
-          </TouchableOpacity>
-        </View>
+            <TouchableOpacity style={s.btnLogin} onPress={onLogin}>
+              <Text style={s.btnLoginText}>¿Ya tienes cuenta? Iniciar sesión</Text>
+            </TouchableOpacity>
+          </View>
+        )}
       </ScrollView>
     </KeyboardAvoidingView>
   );
@@ -150,4 +180,15 @@ const s = StyleSheet.create({
   btnRegistroText: { fontSize: 16, fontWeight: '800', color: '#0D1117' },
   btnLogin: { alignItems: 'center', padding: 12 },
   btnLoginText: { color: '#00C896', fontSize: 14 },
+  verificacionBox: {
+    backgroundColor: '#161B22',
+    borderRadius: 12,
+    padding: 24,
+    borderWidth: 2,
+    borderColor: '#00C896',
+    alignItems: 'center',
+  },
+  verificacionIcon: { fontSize: 48, marginBottom: 16 },
+  verificacionTexto: { fontSize: 14, color: '#8B949E', lineHeight: 22, marginBottom: 12, textAlign: 'center' },
+  emailDestino: { fontSize: 15, fontWeight: '600', color: '#00C896', marginBottom: 16 },
 });
