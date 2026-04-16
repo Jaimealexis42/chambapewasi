@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Eliminar Cuenta - PresupIA</title>
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #f0f4f8 0%, #ffffff 100%);
+    color: #333;
+    line-height: 1.6;
+    min-height: 100vh;
+    padding: 20px;
+  }
+
+  .container {
+    max-width: 800px;
+    margin: 0 auto;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+  }
+
+  .header {
+    background: linear-gradient(135deg, #1e40af 0%, #00C896 100%);
+    color: white;
+    padding: 40px 30px;
+    text-align: center;
+  }
+
+  .header h1 {
+    font-size: 2.5em;
+    margin-bottom: 10px;
+  }
+
+  .header p {
+    font-size: 1.1em;
+    opacity: 0.95;
+  }
+
+  .content {
+    padding: 40px 30px;
+  }
+
+  .warning-box {
+    background-color: #fef3c7;
+    border-left: 4px solid #f59e0b;
+    padding: 20px;
+    margin-bottom: 30px;
+    border-radius: 6px;
+    display: flex;
+    gap: 15px;
+  }
+
+  .warning-box::before {
+    content: "⚠️";
+    font-size: 1.5em;
+    flex-shrink: 0;
+  }
+
+  .warning-box strong {
+    display: block;
+    color: #d97706;
+    margin-bottom: 5px;
+  }
+
+  h2 {
+    color: #1e40af;
+    margin-top: 35px;
+    margin-bottom: 20px;
+    font-size: 1.6em;
+    border-bottom: 3px solid #00C896;
+    padding-bottom: 10px;
+  }
+
+  h2:first-of-type {
+    margin-top: 0;
+  }
+
+  h3 {
+    color: #00C896;
+    margin-top: 25px;
+    margin-bottom: 15px;
+    font-size: 1.2em;
+  }
+
+  p {
+    margin-bottom: 15px;
+    color: #555;
+  }
+
+  ul, ol {
+    margin: 20px 0 20px 30px;
+    padding-left: 15px;
+  }
+
+  li {
+    margin-bottom: 12px;
+    color: #555;
+  }
+
+  .steps {
+    background-color: #f0f9ff;
+    border: 2px solid #1e40af;
+    border-radius: 8px;
+    padding: 25px;
+    margin: 30px 0;
+  }
+
+  .step {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 20px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #e5e7eb;
+  }
+
+  .step:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+  }
+
+  .step-number {
+    background: #00C896;
+    color: white;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 1.1em;
+    flex-shrink: 0;
+  }
+
+  .step-content h4 {
+    color: #1e40af;
+    margin-bottom: 8px;
+    font-size: 1.05em;
+  }
+
+  .step-content p {
+    margin: 0;
+    color: #666;
+    font-size: 0.95em;
+  }
+
+  .data-deleted {
+    background-color: #fee2e2;
+    border: 2px solid #ef4444;
+    border-radius: 8px;
+    padding: 25px;
+    margin: 30px 0;
+  }
+
+  .data-deleted h3 {
+    color: #dc2626;
+    margin-top: 0;
+  }
+
+  .data-list {
+    list-style: none;
+    padding: 0;
+  }
+
+  .data-list li {
+    padding-left: 30px;
+    position: relative;
+    margin-bottom: 12px;
+  }
+
+  .data-list li::before {
+    content: "✕";
+    position: absolute;
+    left: 0;
+    color: #ef4444;
+    font-weight: bold;
+    font-size: 1.2em;
+  }
+
+  .data-retained {
+    background-color: #f0fdf4;
+    border: 2px solid #16a34a;
+    border-radius: 8px;
+    padding: 25px;
+    margin: 30px 0;
+  }
+
+  .data-retained h3 {
+    color: #15803d;
+    margin-top: 0;
+  }
+
+  .data-retained p {
+    color: #166534;
+    margin-bottom: 12px;
+  }
+
+  .faq {
+    background-color: #fafafa;
+    border-radius: 8px;
+    padding: 25px;
+    margin: 30px 0;
+  }
+
+  .faq-item {
+    margin-bottom: 20px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #e5e7eb;
+  }
+
+  .faq-item:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+  }
+
+  .faq-item strong {
+    color: #1e40af;
+    display: block;
+    margin-bottom: 8px;
+    font-size: 1.05em;
+  }
+
+  .contact-section {
+    background: linear-gradient(135deg, #1e40af 0%, #00C896 100%);
+    color: white;
+    padding: 35px 30px;
+    border-radius: 8px;
+    text-align: center;
+    margin: 40px 0;
+  }
+
+  .contact-section h3 {
+    color: white;
+    margin-top: 0;
+    margin-bottom: 15px;
+  }
+
+  .contact-section p {
+    color: rgba(255, 255, 255, 0.95);
+    margin-bottom: 20px;
+  }
+
+  .email-link {
+    display: inline-block;
+    background: white;
+    color: #1e40af;
+    padding: 12px 30px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+
+  .email-link:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+
+  .footer {
+    background-color: #f3f4f6;
+    padding: 20px 30px;
+    text-align: center;
+    color: #6b7280;
+    font-size: 0.9em;
+    border-top: 1px solid #e5e7eb;
+  }
+
+  .legal-note {
+    background-color: #ede9fe;
+    border-left: 4px solid #7c3aed;
+    padding: 15px;
+    margin: 20px 0;
+    border-radius: 4px;
+    font-size: 0.95em;
+  }
+
+  @media (max-width: 600px) {
+    .header h1 {
+      font-size: 1.8em;
+    }
+
+    .header p {
+      font-size: 1em;
+    }
+
+    .step {
+      gap: 15px;
+    }
+
+    .content, .data-deleted, .data-retained, .faq, .contact-section {
+      padding: 20px;
+    }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <div class="header">
+    <h1>Eliminar Cuenta</h1>
+    <p>PresupIA - Herramienta de Presupuestos con IA</p>
+  </div>
+
+  <div class="content">
+    <div class="warning-box">
+      <strong>Importante</strong>
+      Esta acción es permanente y no se puede deshacer. Todos tus datos serán eliminados de nuestros servidores.
+    </div>
+
+    <h2>¿Cómo Eliminar Tu Cuenta?</h2>
+    <p>Puedes eliminar tu cuenta de PresupIA directamente desde la aplicación móvil o contactando a nuestro equipo de soporte. Sigue los pasos a continuación:</p>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-number">1</div>
+        <div class="step-content">
+          <h4>Abre la Aplicación PresupIA</h4>
+          <p>Inicia sesión en tu cuenta de PresupIA en tu dispositivo móvil.</p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-number">2</div>
+        <div class="step-content">
+          <h4>Ve a Configuración</h4>
+          <p>En la pantalla principal, toca el botón de menú o ajustes para acceder a la sección de configuración de tu cuenta.</p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-number">3</div>
+        <div class="step-content">
+          <h4>Selecciona "Eliminar Cuenta"</h4>
+          <p>En las opciones de configuración, busca la opción "Eliminar Cuenta" y selecciónala.</p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-number">4</div>
+        <div class="step-content">
+          <h4>Confirma la Eliminación</h4>
+          <p>Lee la advertencia y confirma que deseas eliminar tu cuenta. Se te pedirá que ingreses tu contraseña para confirmar.</p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-number">5</div>
+        <div class="step-content">
+          <h4>Completado</h4>
+          <p>Tu cuenta será eliminada inmediatamente. Recibirás un email de confirmación en la dirección asociada a tu cuenta.</p>
+        </div>
+      </div>
+    </div>
+
+    <h2>¿Qué Datos Se Eliminan?</h2>
+    <p>Al eliminar tu cuenta, los siguientes datos serán borrados permanentemente de nuestros servidores:</p>
+
+    <div class="data-deleted">
+      <h3>Datos Eliminados</h3>
+      <ul class="data-list">
+        <li><strong>Cuenta de Usuario</strong> - Tu email y datos de autenticación</li>
+        <li><strong>Historial de Presupuestos</strong> - Todos los presupuestos que generaste</li>
+        <li><strong>Preferencias de Configuración</strong> - Ciudad, tipo de obra, número de pisos</li>
+        <li><strong>ID del Dispositivo</strong> - Identificador único del dispositivo</li>
+        <li><strong>Registros de Análisis</strong> - Conteo de análisis realizados</li>
+        <li><strong>Información de Suscripción</strong> - Estado Pro/Free y fechas de suscripción</li>
+      </ul>
+    </div>
+
+    <div class="data-retained">
+      <h3>Datos Retenidos por Razones Legales</h3>
+      <p>Algunos datos se retienen brevemente por razones contables y legales, pero están desasociados de tu cuenta:</p>
+      <ul>
+        <li>Registros de transacciones de pago (requiere cumplimiento fiscal)</li>
+        <li>Logs de seguridad (máximo 90 días)</li>
+      </ul>
+      <p><strong>Nota:</strong> Las imágenes de planos que subiste NUNCA se almacenan en nuestros servidores. Son procesadas por la API de Anthropic y eliminadas inmediatamente después del análisis.</p>
+    </div>
+
+    <h2>Preguntas Frecuentes</h2>
+
+    <div class="faq">
+      <div class="faq-item">
+        <strong>¿Puedo recuperar mi cuenta después de eliminarla?</strong>
+        <p>No. La eliminación es permanente. Sin embargo, puedes crear una nueva cuenta con el mismo email o uno diferente en cualquier momento.</p>
+      </div>
+
+      <div class="faq-item">
+        <strong>¿Cuánto tiempo tarda en eliminarse mi cuenta?</strong>
+        <p>Tu cuenta se elimina inmediatamente cuando confirmas la acción. Recibirás un email de confirmación dentro de unos minutos.</p>
+      </div>
+
+      <div class="faq-item">
+        <strong>¿Qué sucede si tengo una suscripción Pro activa?</strong>
+        <p>Si tienes una suscripción activa, será cancelada inmediatamente. No se realizarán cargos futuros. Si pagaste recientemente, contáctanos para solicitar un reembolso.</p>
+      </div>
+
+      <div class="faq-item">
+        <strong>¿Se eliminarán mis historiales de pago?</strong>
+        <p>Los registros de transacciones se retienen por 90 días para cumplimiento fiscal, pero están completamente desasociados de tu cuenta. Después de 90 días, se eliminan de forma segura.</p>
+      </div>
+
+      <div class="faq-item">
+        <strong>¿Mis planos/imágenes se conservan en el servidor?</strong>
+        <p>No. Las imágenes que subiste NUNCA se almacenan en nuestros servidores. Se envían a Anthropic solo para análisis y se descartan inmediatamente. No hay copias guardadas.</p>
+      </div>
+
+      <div class="faq-item">
+        <strong>¿Puedo solicitar la eliminación sin la app?</strong>
+        <p>Sí. Si no puedes acceder a la app, puedes enviar un email a contacto@devnovaai.com solicitando la eliminación de tu cuenta. Deberás proporcionar tu email registrado y responder a preguntas de verificación.</p>
+      </div>
+
+      <div class="faq-item">
+        <strong>¿Recibiré un email de confirmación?</strong>
+        <p>Sí. Recibirás un email de confirmación de la eliminación en la dirección asociada a tu cuenta dentro de unos minutos.</p>
+      </div>
+    </div>
+
+    <div class="legal-note">
+      <strong>Cumplimiento Legal:</strong> La eliminación de cuentas de PresupIA cumple con la Ley General de Protección de Datos (LGPD), GDPR y otras regulaciones de privacidad de datos. Tus derechos de privacidad están protegidos.
+    </div>
+
+    <h2>¿Necesitas Ayuda?</h2>
+    <p>Si tienes problemas al eliminar tu cuenta o preguntas adicionales, nuestro equipo de soporte está aquí para ayudarte:</p>
+
+    <div class="contact-section">
+      <h3>Contacta a Nuestro Equipo de Soporte</h3>
+      <p>Responderemos a tu solicitud dentro de 24 horas</p>
+      <a href="mailto:contacto@devnovaai.com" class="email-link">📧 contacto@devnovaai.com</a>
+    </div>
+
+    <h2>Información Adicional</h2>
+    <p>Para más información sobre cómo manejamos tus datos, consulta nuestra <a href="./presupia-privacidad.html" style="color: #1e40af; text-decoration: none; font-weight: 500;">Política de Privacidad</a>.</p>
+    <p>Si tienes preguntas sobre nuestros términos de servicio, puedes <a href="mailto:contacto@devnovaai.com" style="color: #1e40af; text-decoration: none; font-weight: 500;">contactarnos</a> en cualquier momento.</p>
+  </div>
+
+  <div class="footer">
+    <p>© 2026 DevNova AI. Todos los derechos reservados.</p>
+    <p>Última actualización: 16 de abril de 2026</p>
+  </div>
+</div>
+
+</body>
+</html>
