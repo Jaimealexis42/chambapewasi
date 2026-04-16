@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Instrucciones para eliminar tu cuenta de ChambaPe Wasi">
+    <title>Eliminar Cuenta - ChambaPe Wasi</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'DM Sans', sans-serif;
+            background-color: #FAF7F2;
+            color: #111110;
+            line-height: 1.6;
+        }
+
+        header {
+            background-color: #E8321A;
+            color: #FFFFFF;
+            padding: 2rem 1rem;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        header h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        header p {
+            font-size: 1rem;
+            opacity: 0.95;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+
+        .alert {
+            background-color: #FFF3F0;
+            border-left: 4px solid #E8321A;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .alert h2 {
+            color: #C02210;
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        .alert p {
+            color: #111110;
+            font-size: 0.95rem;
+        }
+
+        .section {
+            margin-bottom: 2.5rem;
+        }
+
+        .section h2 {
+            color: #E8321A;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            border-bottom: 2px solid #E8321A;
+            padding-bottom: 0.5rem;
+        }
+
+        .section h3 {
+            color: #111110;
+            font-size: 1.1rem;
+            margin-top: 1.5rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .instructions-list {
+            list-style: none;
+            counter-reset: item;
+        }
+
+        .instructions-list li {
+            counter-increment: item;
+            margin-bottom: 1.5rem;
+            padding-left: 3rem;
+            position: relative;
+        }
+
+        .instructions-list li::before {
+            content: counter(item);
+            position: absolute;
+            left: 0;
+            top: 0;
+            background-color: #E8321A;
+            color: white;
+            width: 2rem;
+            height: 2rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+        }
+
+        .instructions-list p {
+            margin: 0.5rem 0;
+            color: #111110;
+        }
+
+        .code-block {
+            background-color: #111110;
+            color: #F5C518;
+            padding: 1rem;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            overflow-x: auto;
+            margin: 1rem 0;
+        }
+
+        .note {
+            background-color: #EDEAE4;
+            border-left: 4px solid #7A7873;
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1.5rem 0;
+            font-size: 0.95rem;
+        }
+
+        .note strong {
+            color: #111110;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .btn-primary {
+            background-color: #E8321A;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #C02210;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(232, 50, 26, 0.3);
+        }
+
+        .btn-secondary {
+            background-color: #FFFFFF;
+            color: #E8321A;
+            border: 2px solid #E8321A;
+        }
+
+        .btn-secondary:hover {
+            background-color: #FFF3F0;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(232, 50, 26, 0.15);
+        }
+
+        .faq-section {
+            background-color: #FFFFFF;
+            border: 1px solid #EDEAE4;
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+        }
+
+        .faq-question {
+            font-weight: 600;
+            color: #111110;
+            margin-bottom: 0.5rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            user-select: none;
+        }
+
+        .faq-question::before {
+            content: '▶';
+            display: inline-block;
+            margin-right: 0.5rem;
+            transition: transform 0.3s ease;
+            color: #E8321A;
+        }
+
+        .faq-section.open .faq-question::before {
+            transform: rotate(90deg);
+        }
+
+        .faq-answer {
+            display: none;
+            padding-top: 1rem;
+            color: #111110;
+        }
+
+        .faq-section.open .faq-answer {
+            display: block;
+        }
+
+        footer {
+            background-color: #111110;
+            color: #FFFFFF;
+            text-align: center;
+            padding: 2rem 1rem;
+            margin-top: 3rem;
+        }
+
+        footer p {
+            font-size: 0.9rem;
+        }
+
+        footer a {
+            color: #E8321A;
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        .highlight {
+            background-color: #F5C518;
+            color: #111110;
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+        }
+
+        .contact-info {
+            background-color: #FFFFFF;
+            border: 2px solid #E8321A;
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .contact-info h3 {
+            color: #E8321A;
+            margin-bottom: 1rem;
+        }
+
+        .contact-info p {
+            margin: 0.5rem 0;
+            color: #111110;
+        }
+
+        .contact-info a {
+            color: #E8321A;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .contact-info a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 600px) {
+            header h1 {
+                font-size: 1.5rem;
+            }
+
+            .section h2 {
+                font-size: 1.3rem;
+            }
+
+            .container {
+                padding: 1.5rem 0.75rem;
+            }
+
+            .button-group {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>ChambaPe Wasi</h1>
+        <p>Eliminar Cuenta</p>
+    </header>
+
+    <div class="container">
+        <div class="alert">
+            <h2>⚠️ Importante</h2>
+            <p>
+                La eliminación de tu cuenta es una acción <span class="highlight">permanente</span> e <span class="highlight">irreversible</span>.
+                Todos tus datos, historial de servicios, mensajes y reseñas serán eliminados.
+                Por favor, considera cuidadosamente antes de proceder.
+            </p>
+        </div>
+
+        <div class="section">
+            <h2>Pasos para Eliminar tu Cuenta</h2>
+
+            <h3>Opción 1: Desde la Aplicación Móvil</h3>
+            <ol class="instructions-list">
+                <li>
+                    <p><strong>Abre la aplicación ChambaPe Wasi</strong></p>
+                    <p>Inicia sesión con tu cuenta si aún no lo has hecho.</p>
+                </li>
+                <li>
+                    <p><strong>Ve a tu Perfil</strong></p>
+                    <p>Toca el icono de perfil en la parte inferior de la pantalla.</p>
+                </li>
+                <li>
+                    <p><strong>Accede a Configuración</strong></p>
+                    <p>Busca y toca la opción "Configuración" o el icono de engranaje.</p>
+                </li>
+                <li>
+                    <p><strong>Selecciona "Eliminar Cuenta"</strong></p>
+                    <p>Desplázate hasta el final de las opciones de configuración.</p>
+                </li>
+                <li>
+                    <p><strong>Confirma tu contraseña</strong></p>
+                    <p>Ingresa tu contraseña para verificar tu identidad.</p>
+                </li>
+                <li>
+                    <p><strong>Revisa las advertencias</strong></p>
+                    <p>Lee cuidadosamente todas las implicaciones de la eliminación.</p>
+                </li>
+                <li>
+                    <p><strong>Confirma la eliminación</strong></p>
+                    <p>Toca el botón "Eliminar Mi Cuenta Permanentemente" para completar el proceso.</p>
+                </li>
+            </ol>
+
+            <h3>Opción 2: Contactar a Soporte</h3>
+            <p>
+                Si tienes problemas para acceder a la opción de eliminar cuenta o prefieres recibir asistencia adicional,
+                puedes contactarnos directamente.
+            </p>
+            <div class="contact-info">
+                <h3>Contacta a nuestro Equipo de Soporte</h3>
+                <p><strong>Email:</strong> <a href="mailto:soporte@chambapewasi.com">soporte@chambapewasi.com</a></p>
+                <p><strong>Asunto Recomendado:</strong> "Solicitud de Eliminación de Cuenta"</p>
+                <p>
+                    En tu mensaje, incluye tu nombre completo, email registrado e ID de usuario (si lo conoces).
+                    Procesaremos tu solicitud dentro de 5-7 días hábiles.
+                </p>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>¿Qué Sucede Después de Eliminar tu Cuenta?</h2>
+            <div class="faq-section">
+                <div class="faq-question">¿Se eliminan todos mis datos?</div>
+                <div class="faq-answer">
+                    Sí, todos tus datos personales, historial de servicios, mensajes, reseñas y calificaciones serán eliminados
+                    de nuestros servidores. Sin embargo, es posible que conservemos información mínima si es requerido por ley.
+                </div>
+            </div>
+
+            <div class="faq-section">
+                <div class="faq-question">¿Puedo recuperar mi cuenta después de eliminarla?</div>
+                <div class="faq-answer">
+                    No. La eliminación es permanente e irreversible. No podremos restaurar tu cuenta ni ninguno de tus datos.
+                    Si deseas usar ChambaPe Wasi nuevamente, deberás crear una nueva cuenta.
+                </div>
+            </div>
+
+            <div class="faq-section">
+                <div class="faq-question">¿Qué sucede con mis trabajos/servicios pendientes?</div>
+                <div class="faq-answer">
+                    Si eres trabajador, cualquier servicio pendiente será cancelado. Los clientes serán notificados de la cancelación.
+                    Si eres cliente, tus reservas pendientes serán canceladas y se notificará a los trabajadores.
+                </div>
+            </div>
+
+            <div class="faq-section">
+                <div class="faq-question">¿Recibiré un reembolso de créditos no utilizados?</div>
+                <div class="faq-answer">
+                    Los créditos no utilizados serán forfeited al eliminar la cuenta. Por lo tanto, asegúrate de usar o transferir
+                    cualquier crédito antes de solicitar la eliminación.
+                </div>
+            </div>
+
+            <div class="faq-section">
+                <div class="faq-question">¿Cuánto tiempo tarda en eliminarse completamente?</div>
+                <div class="faq-answer">
+                    La eliminación es inmediata en la aplicación, pero puede tomar hasta 30 días para que todos tus datos se eliminen
+                    completamente de nuestros servidores de respaldo.
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Consideraciones Importantes</h2>
+
+            <div class="note">
+                <strong>📌 Antes de Eliminar tu Cuenta:</strong>
+                <ul style="margin-left: 1.5rem; margin-top: 0.5rem;">
+                    <li>Completa o cancela todos los trabajos/servicios pendientes</li>
+                    <li>Usa o transfiere tus créditos disponibles</li>
+                    <li>Realiza una copia de seguridad de cualquier información importante</li>
+                    <li>Revisa tus calificaciones y reseñas (no podrán ser vistas después)</li>
+                    <li>Cierra sesión en todos los dispositivos</li>
+                </ul>
+            </div>
+
+            <div class="note">
+                <strong>🔒 Privacidad y Datos:</strong>
+                <ul style="margin-left: 1.5rem; margin-top: 0.5rem;">
+                    <li>Tus datos se encriptarán durante la eliminación</li>
+                    <li>Seguimos el Reglamento General de Protección de Datos (RGPD)</li>
+                    <li>Puedes descargar una copia de tus datos antes de eliminar</li>
+                    <li>Consulta nuestra <a href="#" style="color: #E8321A; text-decoration: none; font-weight: 600;">Política de Privacidad</a> para más información</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>¿Necesitas Ayuda?</h2>
+            <p>
+                Si tienes preguntas sobre cómo eliminar tu cuenta o tienes inquietudes sobre tus datos,
+                nuestro equipo de soporte está aquí para ayudarte.
+            </p>
+            <div class="button-group">
+                <a href="mailto:soporte@chambapewasi.com" class="btn btn-primary">Contactar Soporte</a>
+                <a href="javascript:history.back()" class="btn btn-secondary">Volver Atrás</a>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Preguntas Frecuentes (FAQ)</h2>
+
+            <div class="faq-section">
+                <div class="faq-question">¿Hay un período de enfriamiento para reconsiderar?</div>
+                <div class="faq-answer">
+                    No. Una vez que confirmes la eliminación, tu cuenta será marcada para eliminación inmediatamente.
+                    No hay período de enfriamiento o reconsideración.
+                </div>
+            </div>
+
+            <div class="faq-section">
+                <div class="faq-question">¿Pueden otros usuarios ver mis reseñas después de eliminar mi cuenta?</div>
+                <div class="faq-answer">
+                    No. Las reseñas, calificaciones y el perfil completo serán invisibles para otros usuarios después de la eliminación.
+                </div>
+            </div>
+
+            <div class="faq-section">
+                <div class="faq-question">¿Qué pasa si tengo un saldo pendiente o deuda?</div>
+                <div class="faq-answer">
+                    Si tienes pagos pendientes, deberás resolverlos antes de que se pueda procesar la eliminación de la cuenta.
+                    Contacta a soporte para resolver cualquier problema de pago.
+                </div>
+            </div>
+
+            <div class="faq-section">
+                <div class="faq-question">¿Podré usar el mismo email después de eliminar la cuenta?</div>
+                <div class="faq-answer">
+                    Sí. Después de que tu cuenta se haya eliminado completamente (hasta 30 días), podrás usar el mismo email
+                    para crear una nueva cuenta.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 <strong>ChambaPe Wasi</strong>. Todos los derechos reservados.</p>
+        <p style="margin-top: 1rem; font-size: 0.8rem;">
+            <a href="#">Política de Privacidad</a> |
+            <a href="#">Términos de Servicio</a> |
+            <a href="#">Contacto</a>
+        </p>
+    </footer>
+
+    <script>
+        // Expandir/Contraer FAQ
+        document.querySelectorAll('.faq-section').forEach(section => {
+            section.addEventListener('click', function() {
+                this.classList.toggle('open');
+            });
+        });
+    </script>
+</body>
+</html>
